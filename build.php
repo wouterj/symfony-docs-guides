@@ -65,7 +65,7 @@ $sourceFileSystem->addPlugin(new Finder());
 
 $parseDirCommand = new ParseDirectoryCommand(
     $sourceFileSystem,
-    '/docs/create_framework',
+    '/docs',
     'rst'
 );
 
@@ -128,18 +128,24 @@ $twigBuilder->setEnvironmentFactory(function () use ($logger, $renderer) {
 
 $renderDocumentHandler = new \phpDocumentor\Guides\Handlers\RenderDocumentHandler($renderer);
 foreach ($documents as $document) {
-    $renderDocumentHandler->handle(
-        new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
-            $document,
-            \phpDocumentor\Guides\RenderContext::forDocument(
+    echo "Render: " . $document->getFilePath() . PHP_EOL;
+
+    try {
+        $renderDocumentHandler->handle(
+            new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
                 $document,
-                $sourceFileSystem,
-                new Filesystem(new Local(__DIR__  . '/_build')),
-                '/output/',
-                $metas,
-                new UrlGenerator(),
-                'html'
+                \phpDocumentor\Guides\RenderContext::forDocument(
+                    $document,
+                    $sourceFileSystem,
+                    new Filesystem(new Local(__DIR__ . '/out')),
+                    '/example/',
+                    $metas,
+                    new UrlGenerator(),
+                    'html'
+                )
             )
-        )
-    );
+        );
+    } catch (\Exception $e) {
+        echo "Error:" . $e->getMessage() . PHP_EOL;
+    }
 }
