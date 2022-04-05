@@ -127,21 +127,19 @@ $twigBuilder->setEnvironmentFactory(function () use ($logger, $renderer) {
 });
 
 $renderDocumentHandler = new \phpDocumentor\Guides\Handlers\RenderDocumentHandler($renderer);
-
-$i = 0;
 foreach ($documents as $document) {
     $renderDocumentHandler->handle(
         new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
             $document,
-            new \phpDocumentor\Guides\RenderContext(
-                'example',
+            \phpDocumentor\Guides\RenderContext::forDocument(
+                $document,
                 $sourceFileSystem,
-                new Filesystem(new Local(__DIR__  . '/_build/output')),
+                new Filesystem(new Local(__DIR__  . '/_build')),
+                '/output/',
                 $metas,
                 new UrlGenerator(),
                 'html'
-            ),
-            'test-'.++$i.'.html'
+            )
         )
     );
 }
