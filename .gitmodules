@@ -1,0 +1,4 @@
+[submodule "lib/phpDocumentor"]
+	path = lib/phpDocumentor
+	url = https://github.com/phpDocumentor/phpDocumentor
+	branch = feature/guide_rendering
