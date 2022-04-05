@@ -59,13 +59,13 @@ $parseDirectoryHandler = new ParseDirectoryHandler(
 );
 
 $sourceFileSystem = new Filesystem(new Local(
-    __DIR__  . '/docs/create_framework' // only render the most standalone guide in the docs (avoiding all tricky docs)
+    __DIR__ // only render the most standalone guide in the docs (avoiding all tricky docs)
 ));
 $sourceFileSystem->addPlugin(new Finder());
 
 $parseDirCommand = new ParseDirectoryCommand(
     $sourceFileSystem,
-    './',
+    '/docs/create_framework',
     'rst'
 );
 
