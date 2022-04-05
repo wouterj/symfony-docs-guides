@@ -59,13 +59,13 @@ $parseDirectoryHandler = new ParseDirectoryHandler(
 );
 
 $sourceFileSystem = new Filesystem(new Local(
-    __DIR__  . '/docs/create_framework' // only render the most standalone guide in the docs (avoiding all tricky docs)
+    __DIR__ // only render the most standalone guide in the docs (avoiding all tricky docs)
 ));
 $sourceFileSystem->addPlugin(new Finder());
 
 $parseDirCommand = new ParseDirectoryCommand(
     $sourceFileSystem,
-    './',
+    '/docs',
     'rst'
 );
 
@@ -127,21 +127,25 @@ $twigBuilder->setEnvironmentFactory(function () use ($logger, $renderer) {
 });
 
 $renderDocumentHandler = new \phpDocumentor\Guides\Handlers\RenderDocumentHandler($renderer);
-
-$i = 0;
 foreach ($documents as $document) {
-    $renderDocumentHandler->handle(
-        new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
-            $document,
-            new \phpDocumentor\Guides\RenderContext(
-                'example',
-                $sourceFileSystem,
-                new Filesystem(new Local(__DIR__  . '/_build/output')),
-                $metas,
-                new UrlGenerator(),
-                'html'
-            ),
-            'test-'.++$i.'.html'
-        )
-    );
+    echo "Render: " . $document->getFilePath() . PHP_EOL;
+
+    try {
+        $renderDocumentHandler->handle(
+            new \phpDocumentor\Guides\Handlers\RenderDocumentCommand(
+                $document,
+                \phpDocumentor\Guides\RenderContext::forDocument(
+                    $document,
+                    $sourceFileSystem,
+                    new Filesystem(new Local(__DIR__ . '/out')),
+                    '/example/',
+                    $metas,
+                    new UrlGenerator(),
+                    'html'
+                )
+            )
+        );
+    } catch (\Exception $e) {
+        echo "Error:" . $e->getMessage() . PHP_EOL;
+    }
 }
