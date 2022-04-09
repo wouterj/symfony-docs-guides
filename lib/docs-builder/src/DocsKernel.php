@@ -56,6 +56,7 @@ final class DocsKernel
             {
                 $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/config'));
                 $loader->load('services.php');
+                $loader->load('parser.php');
                 $loader->load('renderer.php');
                 $loader->load('command_bus.php');
             }

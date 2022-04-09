@@ -12,13 +12,17 @@
 namespace SymfonyDocsBuilder\Command;
 
 use Flyfinder\Finder;
+use Flyfinder\Path;
+use Flyfinder\Specification\InPath;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Tactician\CommandBus;
 use Psr\Log\LoggerInterface;
+use SymfonyDocsBuilder\BuildConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
@@ -30,6 +34,7 @@ class BuildDocsCommand extends Command
 {
     public function __construct(
         private CommandBus $commandBus,
+        private BuildConfig $buildConfig,
         private Metas $metas,
         private UrlGenerator $urlGenerator,
         private LoggerInterface $logger,
@@ -40,6 +45,8 @@ class BuildDocsCommand extends Command
     protected function configure(): void
     {
         $this
+            ->addOption('symfony-version', null, InputOption::VALUE_REQUIRED, 'The version of Symfony')
+            ->addOption('no-theme', null, InputOption::VALUE_NONE, 'Use the default theme instead of the styled one')
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'RST files Source directory', getcwd())
             ->addArgument('output-dir', InputArgument::OPTIONAL, 'HTML files output directory')
         ;
@@ -47,23 +54,76 @@ class BuildDocsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $sourceFilesystem = new Filesystem(new Local($input->getArgument('source-dir')));
-        $sourceFilesystem->addPlugin(new Finder());
+        $this->setupBuildConfig($input);
 
-        $targetFilesystem = new Filesystem(new Local($input->getArgument('output-dir')));
+        $documents = $this->parse($this->buildConfig->getSourceFilesystem());
+        $success = $this->render($documents);
 
-        $documents = $this->commandBus->handle(new ParseDirectoryCommand($sourceFilesystem, '/', 'rst'));
+        $this->renderThemeAssets();
+
+        return $success ? self::SUCCESS : self::FAILURE;
+    }
+
+    private function parse(Filesystem $sourceFilesystem): array
+    {
+        return $this->commandBus->handle(new ParseDirectoryCommand($sourceFilesystem, '/', 'rst'));
+    }
+
+    private function render(array $documents): bool
+    {
+        $success = true;
         foreach ($documents as $document) {
             try {
                 $this->commandBus->handle(new RenderDocumentCommand(
                     $document,
-                    RenderContext::forDocument($document, $sourceFilesystem, $targetFilesystem, '/', $this->metas, $this->urlGenerator, 'html')
+                    RenderContext::forDocument(
+                        $document,
+                        $this->buildConfig->getSourceFilesystem(),
+                        $this->buildConfig->getOutputFilesystem(),
+                        '/',
+                        $this->metas,
+                        $this->urlGenerator,
+                        'html'
+                    )
                 ));
             } catch (\Throwable $e) {
+                $success = false;
                 $this->logger->error($e->getMessage());
             }
         }
 
-        return self::SUCCESS;
+        return $success;
+    }
+
+    private function renderThemeAssets(): void
+    {
+        $assetsFilesystem = new Filesystem(new Local(__DIR__.'/../../templates/'.$this->buildConfig->getTheme()));
+        $assetsFilesystem->addPlugin(new Finder());
+
+        $outputFilesystem = $this->buildConfig->getOutputFilesystem();
+
+        if ($outputFilesystem->has('assets')) {
+            $outputFilesystem->deleteDir('assets');
+        }
+
+        foreach ($assetsFilesystem->find(new InPath(new Path('assets'))) as $file) {
+            $outputFilesystem->write(
+                $file['path'],
+                $assetsFilesystem->read($file['path'])
+            );
+        }
+    }
+
+    private function setupBuildConfig(InputInterface $input): void
+    {
+        $this->buildConfig->setSourceDir($input->getArgument('source-dir'));
+        $this->buildConfig->setOutputDir($input->getArgument('output-dir'));
+        if ($sfVersion = $input->getOption('symfony-version')) {
+            $this->buildConfig->setSymfonyVersion($sfVersion);
+        }
+
+        if (!$input->getOption('no-theme')) {
+            $this->buildConfig->setTheme('rtd');
+        }
     }
 }

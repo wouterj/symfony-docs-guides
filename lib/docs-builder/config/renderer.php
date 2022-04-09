@@ -11,8 +11,9 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SymfonyDocsBuilder\BuildConfig;
 use SymfonyDocsBuilder\DependencyInjection\LazyNodeRendererFactory;
-use SymfonyDocsBuilder\DependencyInjection\TwigEnvironmentFactory;
+use SymfonyDocsBuilder\TwigEnvironmentFactory;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
@@ -31,7 +32,7 @@ return static function (ContainerConfigurator $container) {
     $container ->services()
         ->defaults()->autowire()
 
-        ->set(LoaderInterface::class, FilesystemLoader::class)
+        ->set(FilesystemLoader::class)
             ->args([
                 [dirname(__DIR__, 3).'/vendor/phpdocumentor/guides/resources/template']
             ])
@@ -42,7 +43,8 @@ return static function (ContainerConfigurator $container) {
         ->set(EnvironmentBuilder::class)
             ->call('setEnvironmentFactory', [
                 inline_service(TwigEnvironmentFactory::class)->args([
-                    service(LoaderInterface::class),
+                    service(BuildConfig::class),
+                    service(FilesystemLoader::class),
                     tagged_iterator('twig.extension'),
                 ])
             ])
