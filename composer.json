@@ -1,11 +1,11 @@
 {
+    "minimum-stability": "dev",
     "require": {
-        "phpdocumentor/guides": "*@dev",
-        "phpdocumentor/guides-restructured-text": "*@dev",
-        "psr/log": "^3.0"
+        "symfony-tools/docs-builder": "*"
     },
     "repositories": [
         { "type": "path", "url": "lib/phpDocumentor/incubator/guides" },
-        { "type": "path", "url": "lib/phpDocumentor/incubator/guides-restructured-text" }
+        { "type": "path", "url": "lib/phpDocumentor/incubator/guides-restructured-text" },
+        { "type": "path", "url": "lib/docs-builder" }
     ]
 }
