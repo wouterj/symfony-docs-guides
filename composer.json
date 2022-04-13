@@ -4,8 +4,8 @@
         "symfony-tools/docs-builder": "*"
     },
     "repositories": [
-        { "type": "path", "url": "lib/phpDocumentor/incubator/guides" },
-        { "type": "path", "url": "lib/phpDocumentor/incubator/guides-restructured-text" },
+        { "type": "path", "url": "lib/guides/packages/guides" },
+        { "type": "path", "url": "lib/guides/packages/guides-restructured-text" },
         { "type": "path", "url": "lib/docs-builder" }
     ]
 }
