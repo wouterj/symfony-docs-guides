@@ -14,6 +14,7 @@ foreach ($autoloadFiles as $autoloadFile) {
     }
 }
 
+use SymfonyDocsBuilder\Application;
 use SymfonyDocsBuilder\DocsKernel;
 
-DocsKernel::create()->getApplication()->run();
+DocsKernel::create()->get(Application::class)->run();

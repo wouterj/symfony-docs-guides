@@ -88,8 +88,10 @@ return static function (ContainerConfigurator $container) {
         ->set(MarkupLanguageParser::class)
             ->args([tagged_iterator('guides.directive')])
 
-        ->set(Parser::class)->args([
-            '$parserStrategies' => [service(MarkupLanguageParser::class)],
-        ])
+        ->set(Parser::class)
+            ->args([
+                '$parserStrategies' => [service(MarkupLanguageParser::class)],
+            ])
+            ->public()
     ;
 };

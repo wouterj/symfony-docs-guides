@@ -11,7 +11,6 @@
 
 namespace SymfonyDocsBuilder;
 
-use SymfonyDocsBuilder\Application;
 use SymfonyDocsBuilder\DependencyInjection\GuidesExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
@@ -39,9 +38,14 @@ final class DocsKernel
         return new self($container);
     }
 
-    public function getApplication(): Application
+    /**
+     * @template T
+     * @param class-string<T> $fqcn
+     * @return T
+     */
+    public function get(string $fqcn): object
     {
-        return $this->container->get(Application::class);
+        return $this->container->get($fqcn);
     }
 
     private static function createDefaultExtension(): ExtensionInterface

@@ -23,7 +23,7 @@ final class BuildConfig
     private ?Filesystem $sourceFilesystem = null;
     private string $outputDir;
     private ?Filesystem $outputFilesystem = null;
-    private ?string $theme = null;
+    private ?string $theme = 'blank';
     private string $format = 'html';
 
     public function __construct(
