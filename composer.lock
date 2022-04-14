@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8fb5fac752eed8a58e9ab9d62421d83d",
+    "content-hash": "5deb084cca1a83c9c7f690ecf71bfe2c",
     "packages": [
         {
             "name": "doctrine/event-manager",
@@ -266,6 +266,62 @@
                 }
             ],
             "time": "2021-12-09T09:40:50+00:00"
+        },
+        {
+            "name": "league/flysystem-memory",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "a7807552428d6736e62c7f82e3e51e9192e3cd6b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/a7807552428d6736e62c7f82e3e51e9192e3cd6b",
+                "reference": "a7807552428d6736e62c7f82e3e51e9192e3cd6b",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7.10"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Memory\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Leppanen",
+                    "email": "chris.leppanen@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An in-memory adapter for Flysystem.",
+            "homepage": "https://github.com/thephpleague/flysystem-memory",
+            "keywords": [
+                "Flysystem",
+                "adapter",
+                "memory"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem-memory/issues",
+                "source": "https://github.com/thephpleague/flysystem-memory/tree/master"
+            },
+            "time": "2020-01-03T19:42:08+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -602,7 +658,7 @@
         },
         {
             "name": "phpdocumentor/guides",
-            "version": "dev-cd49c4ae530ff7db69c86b6f688b759efd5601a1",
+            "version": "dev-fix-dir-name",
             "dist": {
                 "type": "path",
                 "url": "lib/guides/packages/guides",
@@ -646,7 +702,7 @@
         },
         {
             "name": "phpdocumentor/guides-restructured-text",
-            "version": "dev-cd49c4ae530ff7db69c86b6f688b759efd5601a1",
+            "version": "dev-fix-dir-name",
             "dist": {
                 "type": "path",
                 "url": "lib/guides/packages/guides-restructured-text",

@@ -1,7 +1,8 @@
 {
     "minimum-stability": "dev",
     "require": {
-        "symfony-tools/docs-builder": "*"
+        "symfony-tools/docs-builder": "*",
+        "league/flysystem-memory": "1.*"
     },
     "repositories": [
         { "type": "path", "url": "lib/guides/packages/guides" },

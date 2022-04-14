@@ -122,7 +122,9 @@ class BuildDocsCommand extends Command
             $this->buildConfig->setSymfonyVersion($sfVersion);
         }
 
-        if (!$input->getOption('no-theme')) {
+        if ($input->getOption('no-theme')) {
+            $this->buildConfig->setTheme(null);
+        } else {
             $this->buildConfig->setTheme('rtd');
         }
     }

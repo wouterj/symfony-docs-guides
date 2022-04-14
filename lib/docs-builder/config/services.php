@@ -42,7 +42,7 @@ return static function (ContainerConfigurator $container) {
         ->set(EventDispatcher::class)
         ->alias(EventDispatcherInterface::class, EventDispatcher::class)
 
-        ->set(Metas::class)
+        ->set(Metas::class)->public()
 
         ->set(BuildConfig::class)
 
@@ -53,6 +53,6 @@ return static function (ContainerConfigurator $container) {
         ->set(ReferenceResolver::class)
             ->args([tagged_iterator('guides.reference_resolver')])
 
-        ->set(UrlGenerator::class)
+        ->set(UrlGenerator::class)->public()
     ;
 };

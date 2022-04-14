@@ -70,6 +70,7 @@ return static function (ContainerConfigurator $container) {
 
         ->set(Renderer::class)
             ->args([[service(OutputFormatRenderer::class)]])
+            ->public()
     ;
 
     foreach ((new \phpDocumentor\Guides\Configuration())->htmlNodeTemplates() as $node => $template) {
