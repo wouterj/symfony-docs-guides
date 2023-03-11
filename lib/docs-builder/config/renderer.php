@@ -27,6 +27,7 @@ use phpDocumentor\Guides\Renderer\OutputFormatRenderer;
 use phpDocumentor\Guides\Renderer\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
+use phpDocumentor\Guides\Twig\TwigRenderer;
 
 return static function (ContainerConfigurator $container) {
     $container ->services()
@@ -68,9 +69,11 @@ return static function (ContainerConfigurator $container) {
                 inline_service(TemplateRenderer::class)->autowire(),
             ])
 
-        ->set(Renderer::class)
+        ->set(TwigRenderer::class)
             ->args([[service(OutputFormatRenderer::class)]])
             ->public()
+
+        ->alias(Renderer::class, TwigRenderer::class)
     ;
 
     foreach ((new \phpDocumentor\Guides\Configuration())->htmlNodeTemplates() as $node => $template) {

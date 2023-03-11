@@ -8,5 +8,8 @@
         { "type": "path", "url": "lib/guides/packages/guides" },
         { "type": "path", "url": "lib/guides/packages/guides-restructured-text" },
         { "type": "path", "url": "lib/docs-builder" }
-    ]
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "6.3.x-dev"
+    }
 }

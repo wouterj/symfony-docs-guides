@@ -25,6 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\References\ReferenceResolver;
 use phpDocumentor\Guides\References\Resolver\DocResolver;
+use phpDocumentor\Guides\References\Resolver\RefResolver;
 use phpDocumentor\Guides\UrlGenerator;
 
 return static function (ContainerConfigurator $container) {
@@ -47,6 +48,8 @@ return static function (ContainerConfigurator $container) {
         ->set(BuildConfig::class)
 
         ->set(DocResolver::class)->tag('guides.reference_resolver')
+
+        ->set(RefResolver::class)->tag('guides.reference_resolver')
 
         ->set(SymfonyResolver::class)->tag('guides.reference_resolver')
 

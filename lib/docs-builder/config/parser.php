@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use phpDocumentor\Guides\NodeTransformer\CollectLinkTargetsTransformer;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\BestPracticeDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
@@ -41,6 +42,7 @@ use phpDocumentor\Guides\RestructuredText\Directives\WarningDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Wrap;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
 use phpDocumentor\Guides\RestructuredText\Parser\DocumentParser;
+use phpDocumentor\Guides\RestructuredText\Parser\Productions\DocumentRule;
 use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 use phpDocumentor\Guides\RestructuredText\Toc\GlobSearcher;
 use phpDocumentor\Guides\RestructuredText\Toc\ToctreeBuilder;
@@ -85,8 +87,13 @@ return static function (ContainerConfigurator $container) {
         ->set(WarningDirective::class)->tag('guides.directive')
         ->set(Wrap::class)->tag('guides.directive')
 
+        ->set(CollectLinkTargetsTransformer::class)->tag('guides.node_transformer')
+
         ->set(MarkupLanguageParser::class)
-            ->args([tagged_iterator('guides.directive')])
+            ->args([
+                inline_service(DocumentRule::class)->args([tagged_iterator('guides.directive')]),
+                tagged_iterator('guides.directive')
+            ])
 
         ->set(Parser::class)
             ->args([
