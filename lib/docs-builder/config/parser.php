@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use phpDocumentor\Guides\NodeTransformer\CollectLinkTargetsTransformer;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\BestPracticeDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
@@ -86,8 +85,6 @@ return static function (ContainerConfigurator $container) {
         ->set(Uml::class)->tag('guides.directive')
         ->set(WarningDirective::class)->tag('guides.directive')
         ->set(Wrap::class)->tag('guides.directive')
-
-        ->set(CollectLinkTargetsTransformer::class)->tag('guides.node_transformer')
 
         ->set(MarkupLanguageParser::class)
             ->args([

@@ -18,6 +18,8 @@ use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use League\Tactician\Plugins\LockingMiddleware;
 use SymfonyDocsBuilder\DependencyInjection\CommandLocator;
 use phpDocumentor\Guides\FileCollector;
+use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
+use phpDocumentor\Guides\Handlers\CompileDocumentsHandler;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryHandler;
 use phpDocumentor\Guides\Handlers\ParseFileCommand;
@@ -35,6 +37,9 @@ return static function (ContainerConfigurator $container) {
         ->set(ParseDirectoryHandler::class)
             ->args([inline_service(FileCollector::class)->autowire()])
             ->tag('guides.command', ['command' => ParseDirectoryCommand::class])
+
+        ->set(CompileDocumentsHandler::class)
+            ->tag('guides.command', ['command' => CompileDocumentsCommand::class])
 
         ->set(RenderDocumentHandler::class)
             ->tag('guides.command', ['command' => RenderDocumentCommand::class])

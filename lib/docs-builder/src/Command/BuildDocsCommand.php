@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Metas;
@@ -57,6 +58,7 @@ class BuildDocsCommand extends Command
         $this->setupBuildConfig($input);
 
         $documents = $this->parse($this->buildConfig->getSourceFilesystem());
+        $documents = $this->compile($documents);
         $success = $this->render($documents);
 
         $this->renderThemeAssets();
@@ -67,6 +69,11 @@ class BuildDocsCommand extends Command
     private function parse(Filesystem $sourceFilesystem): array
     {
         return $this->commandBus->handle(new ParseDirectoryCommand($sourceFilesystem, '/', 'rst'));
+    }
+
+    private function compile(array $documents): array
+    {
+        return $this->commandBus->handle(new CompileDocumentsCommand($documents));
     }
 
     private function render(array $documents): bool
