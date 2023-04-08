@@ -48,6 +48,7 @@ class BuildDocsCommand extends Command
         $this
             ->addOption('symfony-version', null, InputOption::VALUE_REQUIRED, 'The version of Symfony')
             ->addOption('no-theme', null, InputOption::VALUE_NONE, 'Use the default theme instead of the styled one')
+            ->addOption('clear-cache', null, InputOption::VALUE_NONE)
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'RST files Source directory', getcwd())
             ->addArgument('output-dir', InputArgument::OPTIONAL, 'HTML files output directory')
         ;
@@ -57,7 +58,13 @@ class BuildDocsCommand extends Command
     {
         $this->setupBuildConfig($input);
 
-        $documents = $this->parse($this->buildConfig->getSourceFilesystem());
+        if ($input->getOption('clear-cache') || !is_file(sys_get_temp_dir().'/guides.cache')) {
+            $documents = $this->parse($this->buildConfig->getSourceFilesystem());
+            file_put_contents(sys_get_temp_dir().'/guides.cache', serialize($documents));
+        } else {
+            $documents = unserialize(file_get_contents(sys_get_temp_dir().'/guides.cache'));
+        }
+
         $documents = $this->compile($documents);
         $success = $this->render($documents);
 
