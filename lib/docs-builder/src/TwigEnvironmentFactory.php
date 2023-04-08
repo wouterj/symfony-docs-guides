@@ -26,7 +26,7 @@ class TwigEnvironmentFactory
     public function __invoke()
     {
         if ($theme = $this->buildConfig->getTheme()) {
-            $themeDir = sprintf('%s/templates/%s/%s', dirname(__DIR__), $theme, $this->buildConfig->getFormat());
+            $themeDir = sprintf('%s/templates/%s/%s/guides', dirname(__DIR__), $theme, $this->buildConfig->getFormat());
             if (file_exists($themeDir)) {
                 $this->loader->prependPath($themeDir);
             }

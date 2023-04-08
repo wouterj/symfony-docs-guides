@@ -11,41 +11,41 @@
 
 namespace SymfonyDocsBuilder\References;
 
-use SymfonyDocsBuilder\BuildConfig;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\References\Resolver\Resolver;
 use phpDocumentor\Guides\RenderContext;
 use phpDocumentor\Guides\Nodes\InlineToken\CrossReferenceNode;
 
-final class SymfonyResolver implements Resolver
+final class PhpResolver implements Resolver
 {
-    public function __construct(
-        private BuildConfig $buildConfig,
-    ) {}
-
     public function supports(CrossReferenceNode $node, RenderContext $context): bool
     {
-        return \in_array($node->getRole(), ['class', 'method', 'namespace'], true);
+        return \in_array($node->getRole(), ['phpclass', 'phpmethod', 'phpfunction'], true);
     }
 
     public function resolve(CrossReferenceNode $node, RenderContext $context): ?ResolvedReference
     {
         [$fqcn, $method] = explode('::', $node->getUrl(), 2) + ['', ''];
-        $fqcn = str_replace('\\\\', '\\', $fqcn);
 
         $label = $node->getText();
         if ($node->getUrl() === $label) {
-            // no explicit label is set, create one based on the URL
-            $label = substr($fqcn, strrpos($fqcn, '\\') + 1);
+            // no explicit label is set
+            $label = $fqcn;
             if ($method) {
                 $label .= '::'.$method.'()';
             }
         }
 
+        $path = match ($node->getRole()) {
+            'phpclass' => 'class.%s.php',
+            'phpmethod' => '%s.%s.php',
+            'phpfunction' => 'function.%s.php',
+        };
+
         return new ResolvedReference(
             null,
             $label,
-            sprintf($this->buildConfig->getSymfonyRepositoryUrl(), str_replace('\\', '/', $fqcn))
+            sprintf('https://php.net/'.$path, strtolower($fqcn), strtolower($method))
         );
     }
 }

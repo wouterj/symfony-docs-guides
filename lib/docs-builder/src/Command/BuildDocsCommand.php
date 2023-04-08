@@ -26,6 +26,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
+use phpDocumentor\Guides\Handlers\ParseFileCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RenderContext;
@@ -87,6 +88,10 @@ class BuildDocsCommand extends Command
     {
         $success = true;
         foreach ($documents as $document) {
+            //if (!str_starts_with($document->getFilePath(), 'security')) {
+            //    continue;
+            //}
+
             try {
                 $this->commandBus->handle(new RenderDocumentCommand(
                     $document,

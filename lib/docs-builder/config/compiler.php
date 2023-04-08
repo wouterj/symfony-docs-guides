@@ -14,6 +14,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Compiler\DocumentNodeTraverser;
 use phpDocumentor\Guides\Compiler\NodeTransformers\CollectLinkTargetsTransformer;
+use phpDocumentor\Guides\Compiler\NodeTransformers\CustomNodeTransformerFactory;
 use phpDocumentor\Guides\Compiler\NodeTransformers\TocNodeTransformer;
 use phpDocumentor\Guides\Compiler\Passes\MetasPass;
 use phpDocumentor\Guides\Compiler\Passes\TransformerPass;
@@ -30,7 +31,8 @@ return static function (ContainerConfigurator $container) {
 
         ->set(DocumentNodeTraverser::class)
             ->args([
-                tagged_iterator('guides.node_transformer')
+                inline_service(CustomNodeTransformerFactory::class)
+                    ->args([tagged_iterator('guides.node_transformer')])
             ])
 
         ->set(Compiler::class)

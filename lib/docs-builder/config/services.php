@@ -17,6 +17,7 @@ use SymfonyDocsBuilder\Application;
 use SymfonyDocsBuilder\BuildConfig;
 use SymfonyDocsBuilder\Command\BuildDocsCommand;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
+use SymfonyDocsBuilder\References\PhpResolver;
 use SymfonyDocsBuilder\References\SymfonyResolver;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -52,6 +53,8 @@ return static function (ContainerConfigurator $container) {
         ->set(RefResolver::class)->tag('guides.reference_resolver')
 
         ->set(SymfonyResolver::class)->tag('guides.reference_resolver')
+
+        ->set(PhpResolver::class)->tag('guides.reference_resolver')
 
         ->set(ReferenceResolver::class)
             ->args([tagged_iterator('guides.reference_resolver')])

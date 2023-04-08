@@ -18,6 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 
 final class DocsKernel
 {
@@ -64,6 +67,9 @@ final class DocsKernel
                 $loader->load('compiler.php');
                 $loader->load('renderer.php');
                 $loader->load('command_bus.php');
+
+                $container->registerForAutoconfiguration(NodeRendererFactoryAware::class)
+                    ->addMethodCall('setNodeRendererFactory', [new Reference(NodeRendererFactory::class)]);
             }
         };
     }

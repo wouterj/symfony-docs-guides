@@ -17,25 +17,28 @@ use SymfonyDocsBuilder\TwigEnvironmentFactory;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
-use phpDocumentor\Guides\NodeRenderers\Html\DocumentNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\DelegatingNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
+use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderer\OutputFormatRenderer;
-use phpDocumentor\Guides\Renderer\TemplateRenderer;
+use phpDocumentor\Guides\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Guides\Twig\TwigRenderer;
+use phpDocumentor\Guides\Twig\TwigTemplateRenderer;
 
 return static function (ContainerConfigurator $container) {
     $container ->services()
-        ->defaults()->autowire()
+        ->defaults()->autowire()->autoconfigure()
 
         ->set(FilesystemLoader::class)
             ->args([
-                [dirname(__DIR__, 3).'/vendor/phpdocumentor/guides/resources/template']
+                [dirname(__DIR__, 3).'/vendor/phpdocumentor/guides/resources/template/html/guides']
             ])
 
         ->set(AssetsExtension::class)
@@ -50,8 +53,6 @@ return static function (ContainerConfigurator $container) {
                 ])
             ])
 
-        ->set(DocumentNodeRenderer::class)->tag('guides.node_renderer')
-
         ->set(SpanNodeRenderer::class)->tag('guides.node_renderer')
 
         ->set(TableNodeRenderer::class)->tag('guides.node_renderer')
@@ -62,25 +63,22 @@ return static function (ContainerConfigurator $container) {
                 inline_service(DefaultNodeRenderer::class),
             ])
 
-        ->set(OutputFormatRenderer::class)
-            ->args([
-                'html',
-                inline_service(LazyNodeRendererFactory::class)->tag('container.service_subscriber'),
-                inline_service(TemplateRenderer::class)->autowire(),
-            ])
+        ->alias(NodeRendererFactory::class, InMemoryNodeRendererFactory::class)
 
-        ->set(TwigRenderer::class)
-            ->args([[service(OutputFormatRenderer::class)]])
-            ->public()
+        ->set(DelegatingNodeRenderer::class)
 
-        ->alias(Renderer::class, TwigRenderer::class)
+        ->alias(NodeRenderer::class, DelegatingNodeRenderer::class)
+
+        ->set(TwigTemplateRenderer::class)
+
+        ->alias(TemplateRenderer::class, TwigTemplateRenderer::class)
     ;
 
     foreach ((new \phpDocumentor\Guides\Configuration())->htmlNodeTemplates() as $node => $template) {
         $container->services()
-            ->set('guides.node_renderer'.substr($node, strrpos($node, '\\') + 1), TemplateNodeRenderer::class)
+            ->set('guides.node_renderer.'.strtolower(substr($node, strrpos($node, '\\') + 1, -4)), TemplateNodeRenderer::class)
                 ->args([
-                    service(Renderer::class),
+                    service(TemplateRenderer::class),
                     $template,
                     $node,
                 ])
