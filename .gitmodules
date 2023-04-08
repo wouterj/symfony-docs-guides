@@ -1,3 +1,6 @@
 [submodule "lib/guides"]
 	path = lib/guides
 	url = https://github.com/phpDocumentor/guides
+[submodule "docs"]
+	path = docs
+	url = https://github.com/symfony/symfony-docs
