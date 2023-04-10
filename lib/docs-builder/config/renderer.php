@@ -14,6 +14,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use SymfonyDocsBuilder\BuildConfig;
 use SymfonyDocsBuilder\DependencyInjection\LazyNodeRendererFactory;
 use SymfonyDocsBuilder\TwigEnvironmentFactory;
+use SymfonyDocsBuilder\Twig\HighlighterExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
@@ -42,8 +43,8 @@ return static function (ContainerConfigurator $container) {
                 [dirname(__DIR__, 3).'/vendor/phpdocumentor/guides/resources/template/html/guides']
             ])
 
-        ->set(AssetsExtension::class)
-            ->tag('twig.extension')
+        ->set(AssetsExtension::class)->tag('twig.extension')
+        ->set(HighlighterExtension::class)->tag('twig.extension')
 
         ->set(EnvironmentBuilder::class)
             ->call('setEnvironmentFactory', [

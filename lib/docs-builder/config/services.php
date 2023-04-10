@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Highlight\Highlighter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use SymfonyDocsBuilder\Application;
@@ -43,6 +44,10 @@ return static function (ContainerConfigurator $container) {
 
         ->set(EventDispatcher::class)
         ->alias(EventDispatcherInterface::class, EventDispatcher::class)
+
+        ->set(Highlighter::class)
+            ->call('registerLanguage', ['php', __DIR__.'/../templates/highlight.php/php.json', true])
+            ->call('registerLanguage', ['twig', __DIR__.'/../templates/highlight.php/twig.json', true])
 
         ->set(Metas::class)->public()
 
