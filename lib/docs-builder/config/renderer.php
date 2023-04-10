@@ -26,6 +26,7 @@ use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderer\OutputFormatRenderer;
+use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\AdmonitionNodeRenderer;
 use phpDocumentor\Guides\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
@@ -56,6 +57,8 @@ return static function (ContainerConfigurator $container) {
         ->set(SpanNodeRenderer::class)->tag('guides.node_renderer')
 
         ->set(TableNodeRenderer::class)->tag('guides.node_renderer')
+
+        ->set(AdmonitionNodeRenderer::class)->tag('guides.node_renderer')
 
         ->set(InMemoryNodeRendererFactory::class)
             ->args([

@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\BestPracticeDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
@@ -85,6 +86,8 @@ return static function (ContainerConfigurator $container) {
         ->set(Uml::class)->tag('guides.directive')
         ->set(WarningDirective::class)->tag('guides.directive')
         ->set(Wrap::class)->tag('guides.directive')
+
+        ->set(VersionAddedDirective::class)->tag('guides.directive')
 
         ->set(MarkupLanguageParser::class)
             ->args([

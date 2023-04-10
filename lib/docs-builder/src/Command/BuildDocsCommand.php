@@ -88,10 +88,6 @@ class BuildDocsCommand extends Command
     {
         $success = true;
         foreach ($documents as $document) {
-            //if (!str_starts_with($document->getFilePath(), 'security')) {
-            //    continue;
-            //}
-
             try {
                 $this->commandBus->handle(new RenderDocumentCommand(
                     $document,
