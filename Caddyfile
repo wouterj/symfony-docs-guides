@@ -1,0 +1,5 @@
+:2000
+
+file_server {
+    root html
+}
