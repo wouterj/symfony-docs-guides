@@ -15,9 +15,10 @@ use Highlight\Highlighter;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use SymfonyDocsBuilder\Application;
-use SymfonyDocsBuilder\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\Command\BuildDocsCommand;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
+use SymfonyDocsBuilder\DocBuilder;
 use SymfonyDocsBuilder\References\PhpResolver;
 use SymfonyDocsBuilder\References\SymfonyResolver;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -65,5 +66,7 @@ return static function (ContainerConfigurator $container) {
             ->args([tagged_iterator('guides.reference_resolver')])
 
         ->set(UrlGenerator::class)
+
+        ->set(DocBuilder::class)->public()
     ;
 };

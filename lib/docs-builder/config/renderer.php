@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use SymfonyDocsBuilder\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\DependencyInjection\LazyNodeRendererFactory;
 use SymfonyDocsBuilder\TwigEnvironmentFactory;
 use SymfonyDocsBuilder\Twig\HighlighterExtension;

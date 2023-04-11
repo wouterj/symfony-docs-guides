@@ -18,7 +18,9 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Tactician\CommandBus;
 use Psr\Log\LoggerInterface;
-use SymfonyDocsBuilder\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildEnvironment;
+use SymfonyDocsBuilder\Build\LocalBuildEnvironment;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +36,8 @@ use phpDocumentor\Guides\UrlGenerator;
 
 class BuildDocsCommand extends Command
 {
+    private BuildEnvironment $buildEnvironment;
+
     public function __construct(
         private CommandBus $commandBus,
         private BuildConfig $buildConfig,
@@ -55,12 +59,27 @@ class BuildDocsCommand extends Command
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->buildEnvironment = new LocalBuildEnvironment();
+        $this->buildEnvironment->setSourceDir($input->getArgument('source-dir'));
+        $this->buildEnvironment->setOutputDir($input->getArgument('output-dir'));
+
+        if ($sfVersion = $input->getOption('symfony-version')) {
+            $this->buildConfig->setSymfonyVersion($sfVersion);
+        }
+
+        if ($input->getOption('no-theme')) {
+            $this->buildConfig->setTheme(null);
+        } else {
+            $this->buildConfig->setTheme('rtd');
+        }
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->setupBuildConfig($input);
-
         if ($input->getOption('clear-cache') || !is_file(sys_get_temp_dir().'/guides.cache')) {
-            $documents = $this->parse($this->buildConfig->getSourceFilesystem());
+            $documents = $this->parse($this->buildEnvironment->getSourceFilesystem());
             file_put_contents(sys_get_temp_dir().'/guides.cache', serialize($documents));
         } else {
             $documents = unserialize(file_get_contents(sys_get_temp_dir().'/guides.cache'));
@@ -93,8 +112,8 @@ class BuildDocsCommand extends Command
                     $document,
                     RenderContext::forDocument(
                         $document,
-                        $this->buildConfig->getSourceFilesystem(),
-                        $this->buildConfig->getOutputFilesystem(),
+                        $this->buildEnvironment->getSourceFilesystem(),
+                        $this->buildEnvironment->getOutputFilesystem(),
                         '/',
                         $this->metas,
                         $this->urlGenerator,
@@ -115,7 +134,7 @@ class BuildDocsCommand extends Command
         $assetsFilesystem = new Filesystem(new Local(__DIR__.'/../../templates/'.$this->buildConfig->getTheme()));
         $assetsFilesystem->addPlugin(new Finder());
 
-        $outputFilesystem = $this->buildConfig->getOutputFilesystem();
+        $outputFilesystem = $this->buildEnvironment->getOutputFilesystem();
 
         if ($outputFilesystem->has('assets')) {
             $outputFilesystem->deleteDir('assets');
@@ -128,21 +147,6 @@ class BuildDocsCommand extends Command
                 $file['path'],
                 $assetsFilesystem->read($file['path'])
             );
-        }
-    }
-
-    private function setupBuildConfig(InputInterface $input): void
-    {
-        $this->buildConfig->setSourceDir($input->getArgument('source-dir'));
-        $this->buildConfig->setOutputDir($input->getArgument('output-dir'));
-        if ($sfVersion = $input->getOption('symfony-version')) {
-            $this->buildConfig->setSymfonyVersion($sfVersion);
-        }
-
-        if ($input->getOption('no-theme')) {
-            $this->buildConfig->setTheme(null);
-        } else {
-            $this->buildConfig->setTheme('rtd');
         }
     }
 }

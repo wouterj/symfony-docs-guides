@@ -11,7 +11,7 @@
 
 namespace SymfonyDocsBuilder;
 
-use SymfonyDocsBuilder\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildConfig;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
