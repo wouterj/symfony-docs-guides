@@ -32,7 +32,7 @@ class HtmlIntegrationTest extends TestCase
     public static function provideBlocks(): iterable
     {
         foreach ((new Finder())->files()->in(__DIR__.'/fixtures/source/blocks') as $file) {
-            yield [$file->getRealPath(), __DIR__.'/fixtures/expected/blocks/'.str_replace('.rst', '.html', $file->getRelativePathname())];
+            yield $file->getRelativePathname() => [$file->getRealPath(), __DIR__.'/fixtures/expected/blocks/'.str_replace('.rst', '.html', $file->getRelativePathname())];
         }
     }
 

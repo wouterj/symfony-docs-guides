@@ -34,13 +34,19 @@ use phpDocumentor\Guides\Twig\EnvironmentBuilder;
 use phpDocumentor\Guides\Twig\TwigRenderer;
 use phpDocumentor\Guides\Twig\TwigTemplateRenderer;
 
-return static function (ContainerConfigurator $container) {
+foreach ([3, 1] as $ps) {
+    if (is_dir($vendor = dirname(__DIR__, $ps).'/vendor')) {
+        break;
+    }
+}
+
+return static function (ContainerConfigurator $container) use ($vendor) {
     $container ->services()
         ->defaults()->autowire()->autoconfigure()
 
         ->set(FilesystemLoader::class)
             ->args([
-                [dirname(__DIR__, 3).'/vendor/phpdocumentor/guides/resources/template/html/guides']
+                [$vendor.'/phpdocumentor/guides/resources/template/html/guides']
             ])
 
         ->set(AssetsExtension::class)->tag('twig.extension')

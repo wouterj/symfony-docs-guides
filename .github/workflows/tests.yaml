@@ -1,0 +1,35 @@
+name: Docs Builder Tests
+
+on:
+    push:
+        branches: [main]
+    pull_request: ~
+
+jobs:
+    tests:
+        name: Tests
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+
+        steps:
+            - name: 'Checkout code'
+              uses: actions/checkout@v3
+
+            - name: 'Install PHP'
+              uses: shivammathur/setup-php@v2
+              with:
+                  coverage: none
+                  php-version: '8.2'
+                  tools: composer:v2
+                  ini-values: date.timezone=UTC
+
+            - name: Install dependencies
+              run: |
+                  cd lib/docs-builder
+                  composer install --no-progress
+                  ./vendor/bin/simple-phpunit install
+
+            - name: PHPUnit
+              run: cd lib/docs-builder && vendor/bin/simple-phpunit
