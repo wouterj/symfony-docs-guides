@@ -36,7 +36,7 @@ final class SymfonyResolver implements Resolver
         $label = $node->getText();
         if ($node->getUrl() === $label) {
             // no explicit label is set, create one based on the URL
-            $label = substr($fqcn, strrpos($fqcn, '\\') + 1);
+            $label = substr($fqcn, (strrpos($fqcn, '\\') ?: -1) + 1);
             if ($method) {
                 $label .= '::'.$method.'()';
             }

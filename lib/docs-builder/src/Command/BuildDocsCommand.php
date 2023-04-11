@@ -121,7 +121,9 @@ class BuildDocsCommand extends Command
             $outputFilesystem->deleteDir('assets');
         }
 
+        /** @psalm-suppress UndefinedMagicMethod */
         foreach ($assetsFilesystem->find(new InPath(new Path('assets'))) as $file) {
+            /** @psalm-suppress PossiblyFalseArgument */
             $outputFilesystem->write(
                 $file['path'],
                 $assetsFilesystem->read($file['path'])

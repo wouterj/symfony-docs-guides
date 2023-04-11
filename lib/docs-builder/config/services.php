@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container) {
             ->call('registerLanguage', ['php', __DIR__.'/../templates/highlight.php/php.json', true])
             ->call('registerLanguage', ['twig', __DIR__.'/../templates/highlight.php/twig.json', true])
 
-        ->set(Metas::class)->public()
+        ->set(Metas::class)
 
         ->set(BuildConfig::class)
 
@@ -64,6 +64,6 @@ return static function (ContainerConfigurator $container) {
         ->set(ReferenceResolver::class)
             ->args([tagged_iterator('guides.reference_resolver')])
 
-        ->set(UrlGenerator::class)->public()
+        ->set(UrlGenerator::class)
     ;
 };

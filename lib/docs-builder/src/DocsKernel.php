@@ -28,7 +28,7 @@ final class DocsKernel
         private Container $container
     ) {}
 
-    public static function create(array $extensions = [])
+    public static function create(array $extensions = []): self
     {
         $container = new ContainerBuilder();
         foreach (array_merge($extensions, [self::createDefaultExtension()]) as $extension) {
@@ -45,6 +45,9 @@ final class DocsKernel
      * @template T
      * @param class-string<T> $fqcn
      * @return T
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
      */
     public function get(string $fqcn): object
     {

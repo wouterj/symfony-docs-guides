@@ -12,12 +12,11 @@
 namespace SymfonyDocsBuilder\Directives;
 
 use phpDocumentor\Guides\RestructuredText\Directives\AbstractAdmonitionDirective;
-use phpDocumentor\Guides\RestructuredText\Span\SpanParser;
 
 class VersionAddedDirective extends AbstractAdmonitionDirective
 {
-    public function __construct(SpanParser $spanParser)
+    public function __construct()
     {
-        parent::__construct('versionadded', 'Version Added', $spanParser);
+        parent::__construct('versionadded', 'Version Added');
     }
 }
