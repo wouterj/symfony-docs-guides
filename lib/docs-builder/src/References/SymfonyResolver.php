@@ -11,7 +11,7 @@
 
 namespace SymfonyDocsBuilder\References;
 
-use SymfonyDocsBuilder\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildConfig;
 use phpDocumentor\Guides\References\ResolvedReference;
 use phpDocumentor\Guides\References\Resolver\Resolver;
 use phpDocumentor\Guides\RenderContext;
