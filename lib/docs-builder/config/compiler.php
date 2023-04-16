@@ -13,6 +13,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use phpDocumentor\Guides\Compiler\Compiler;
 use phpDocumentor\Guides\Compiler\DocumentNodeTraverser;
+use phpDocumentor\Guides\Compiler\NodeTransformers\ClassNodeTransformer;
 use phpDocumentor\Guides\Compiler\NodeTransformers\CollectLinkTargetsTransformer;
 use phpDocumentor\Guides\Compiler\NodeTransformers\CustomNodeTransformerFactory;
 use phpDocumentor\Guides\Compiler\NodeTransformers\TocNodeTransformer;
@@ -28,6 +29,7 @@ return static function (ContainerConfigurator $container) {
 
         ->set(TocNodeTransformer::class)->tag('guides.node_transformer')
         ->set(CollectLinkTargetsTransformer::class)->tag('guides.node_transformer')
+        ->set(ClassNodeTransformer::class)->tag('guides.node_transformer')
 
         ->set(DocumentNodeTraverser::class)
             ->args([
