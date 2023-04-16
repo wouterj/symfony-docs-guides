@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SymfonyDocsBuilder\Directives\DeprecatedDirective;
+use SymfonyDocsBuilder\Directives\ScreencastDirective;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\BestPracticeDirective;
@@ -88,6 +90,8 @@ return static function (ContainerConfigurator $container) {
         ->set(Wrap::class)->tag('guides.directive')
 
         ->set(VersionAddedDirective::class)->tag('guides.directive')
+        ->set(DeprecatedDirective::class)->tag('guides.directive')
+        ->set(ScreencastDirective::class)->tag('guides.directive')
 
         ->set(MarkupLanguageParser::class)
             ->args([

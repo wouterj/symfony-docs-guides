@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Highlight\Highlighter;
+use Highlight\Highlighter as HighlightPHP;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use SymfonyDocsBuilder\Application;
@@ -19,12 +19,15 @@ use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\Command\BuildDocsCommand;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use SymfonyDocsBuilder\DocBuilder;
+use SymfonyDocsBuilder\EventListener\ScreencastAdmonitionListener;
+use SymfonyDocsBuilder\Highlighter\Highlighter;
 use SymfonyDocsBuilder\References\PhpResolver;
 use SymfonyDocsBuilder\References\SymfonyResolver;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use phpDocumentor\Guides\Event\PreParseDocument;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\References\ReferenceResolver;
 use phpDocumentor\Guides\References\Resolver\DocResolver;
@@ -44,11 +47,15 @@ return static function (ContainerConfigurator $container) {
         ->set(LoggerInterface::class, ConsoleLogger::class)
 
         ->set(EventDispatcher::class)
+            ->call('addListener', [PreParseDocument::class, [inline_service(ScreencastAdmonitionListener::class), 'onPreParseDocument']])
         ->alias(EventDispatcherInterface::class, EventDispatcher::class)
 
         ->set(Highlighter::class)
-            ->call('registerLanguage', ['php', __DIR__.'/../templates/highlight.php/php.json', true])
-            ->call('registerLanguage', ['twig', __DIR__.'/../templates/highlight.php/twig.json', true])
+            ->args([
+                inline_service(HighlightPHP::class)
+                    ->call('registerLanguage', ['php', __DIR__.'/../templates/highlight.php/php.json', true])
+                    ->call('registerLanguage', ['twig', __DIR__.'/../templates/highlight.php/twig.json', true])
+            ])
 
         ->set(Metas::class)
 

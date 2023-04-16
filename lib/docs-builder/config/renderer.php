@@ -13,8 +13,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\DependencyInjection\LazyNodeRendererFactory;
-use SymfonyDocsBuilder\TwigEnvironmentFactory;
+use SymfonyDocsBuilder\NodeRenderer\CodeNodeRenderer;
+use SymfonyDocsBuilder\Twig\EnvironmentFactory;
 use SymfonyDocsBuilder\Twig\HighlighterExtension;
+use SymfonyDocsBuilder\Twig\UrlExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
@@ -25,9 +27,11 @@ use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
+use phpDocumentor\Guides\Nodes\CodeNode;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Guides\Renderer\OutputFormatRenderer;
 use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\AdmonitionNodeRenderer;
+use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\TopicNodeRenderer;
 use phpDocumentor\Guides\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
@@ -51,10 +55,11 @@ return static function (ContainerConfigurator $container) use ($vendor) {
 
         ->set(AssetsExtension::class)->tag('twig.extension')
         ->set(HighlighterExtension::class)->tag('twig.extension')
+        ->set(UrlExtension::class)->tag('twig.extension')
 
         ->set(EnvironmentBuilder::class)
             ->call('setEnvironmentFactory', [
-                inline_service(TwigEnvironmentFactory::class)->args([
+                inline_service(EnvironmentFactory::class)->args([
                     service(BuildConfig::class),
                     service(FilesystemLoader::class),
                     tagged_iterator('twig.extension'),
@@ -65,7 +70,11 @@ return static function (ContainerConfigurator $container) use ($vendor) {
 
         ->set(TableNodeRenderer::class)->tag('guides.node_renderer')
 
+        ->set(TopicNodeRenderer::class)->tag('guides.node_renderer')
+
         ->set(AdmonitionNodeRenderer::class)->tag('guides.node_renderer')
+
+        ->set(CodeNodeRenderer::class)->tag('guides.node_renderer')
 
         ->set(InMemoryNodeRendererFactory::class)
             ->args([
@@ -85,6 +94,10 @@ return static function (ContainerConfigurator $container) use ($vendor) {
     ;
 
     foreach ((new \phpDocumentor\Guides\Configuration())->htmlNodeTemplates() as $node => $template) {
+        if (CodeNode::class === $node) {
+            continue;
+        }
+
         $container->services()
             ->set('guides.node_renderer.'.strtolower(substr($node, strrpos($node, '\\') + 1, -4)), TemplateNodeRenderer::class)
                 ->args([

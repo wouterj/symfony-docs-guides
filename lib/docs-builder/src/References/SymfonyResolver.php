@@ -36,16 +36,25 @@ final class SymfonyResolver implements Resolver
         $label = $node->getText();
         if ($node->getUrl() === $label) {
             // no explicit label is set, create one based on the URL
-            $label = substr($fqcn, (strrpos($fqcn, '\\') ?: -1) + 1);
             if ($method) {
-                $label .= '::'.$method.'()';
+                $label = $method.'()';
+            } else {
+                $label = substr($fqcn, (strrpos($fqcn, '\\') ?: -1) + 1);
             }
+        }
+
+        $filename = str_replace('\\', '/', $fqcn);
+        if ('namespace' !== $node->getRole()) {
+            $filename .= '.php';
         }
 
         return new ResolvedReference(
             null,
             $label,
-            sprintf($this->buildConfig->getSymfonyRepositoryUrl(), str_replace('\\', '/', $fqcn))
+            sprintf($this->buildConfig->getSymfonyRepositoryUrl(), $filename),
+            [
+                'title' => $fqcn.($method ? '::'.$method.'()' : '')
+            ]
         );
     }
 }

@@ -32,20 +32,26 @@ final class PhpResolver implements Resolver
             // no explicit label is set
             $label = $fqcn;
             if ($method) {
-                $label .= '::'.$method.'()';
+                $label .= '::'.$method;
+            }
+            if ('phpclass' !== $node->getRole()) {
+                $label .= '()';
             }
         }
 
         $path = match ($node->getRole()) {
-            'phpclass' => 'class.%s.php',
-            'phpmethod' => '%s.%s.php',
-            'phpfunction' => 'function.%s.php',
+            'phpclass' => 'class.%s',
+            'phpmethod' => '%s.%s',
+            'phpfunction' => 'function.%s',
         };
 
         return new ResolvedReference(
             null,
             $label,
-            sprintf('https://php.net/'.$path, strtolower($fqcn), strtolower($method))
+            sprintf('https://php.net/'.$path, str_replace('_', '-', strtolower($fqcn)), strtolower($method)),
+            [
+                'title' => $label,
+            ]
         );
     }
 }

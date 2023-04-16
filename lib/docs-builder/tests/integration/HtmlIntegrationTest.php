@@ -42,6 +42,7 @@ class HtmlIntegrationTest extends TestCase
         $html = preg_replace('# +#', ' ', $html);
         $html = preg_replace('# <#', '<', $html);
         $html = preg_replace('#> #', '>', $html);
+        $html = preg_replace('#\R+#', "\n", $html);
 
         $html = substr($html, strpos($html, '<body>') + 6);
         $html = substr($html, 0, strpos($html, '</body>'));

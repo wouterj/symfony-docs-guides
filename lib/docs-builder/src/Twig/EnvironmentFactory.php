@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace SymfonyDocsBuilder;
+namespace SymfonyDocsBuilder\Twig;
 
 use SymfonyDocsBuilder\Build\BuildConfig;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class TwigEnvironmentFactory
+class EnvironmentFactory
 {
     public function __construct(
         private BuildConfig $buildConfig,
@@ -23,10 +23,10 @@ class TwigEnvironmentFactory
         private iterable $extensions,
     ) {}
 
-    public function __invoke()
+    public function __invoke(): Environment
     {
         if ($theme = $this->buildConfig->getTheme()) {
-            $themeDir = sprintf('%s/templates/%s/%s/guides', dirname(__DIR__), $theme, $this->buildConfig->getFormat());
+            $themeDir = sprintf('%s/templates/%s/%s/guides', dirname(__DIR__, 2), $theme, $this->buildConfig->getFormat());
             if (file_exists($themeDir)) {
                 $this->loader->prependPath($themeDir);
             }

@@ -1,29 +1,11 @@
-<div translate="no" class="highlight-{{ node.language }} notranslate">
-    <table class="highlighttable">
-        <tbody>
-            <tr>
-                <td class="linenos">
-                    <div class="linenodiv">
-                        <pre>
-                            {%- set nr = node.startingLineNumber ?? 1 -%}
-                            {%- for l in node.value | split("\n") -%}
-                                {{ nr + loop.index0 }}
-{% endfor -%}
-                        </pre>
-                    </div>
-                </td>
-                <td class="code">
-                    <div class="highlight">
-                        <pre class="hljs {{ node.language }}">
-                            {%- if node.language -%}
-                                {{ node.value | highlight(node.language) }}
-                            {%- else -%}
-                                {{ node.value }}
-                            {%- endif -%}
-                        </pre>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+{% set size = ['-', 'sm', 'md', 'lg', 'xl'][loc | length] %}
+<div translate="no" data-loc="{{ loc }}" class="notranslate codeblock codeblock-length-{{ size }}{% for lang in languages %} codeblock-{{ lang }}{% endfor %}">
+    <div class="codeblock-scroll">
+        <pre class="codeblock-lines">
+            {{- line_numbers -}}
+        </pre>
+        <pre class="codeblock-code"><code>
+            {{- code|raw -}}
+        </code></pre>
+    </div>
 </div>

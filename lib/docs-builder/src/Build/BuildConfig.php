@@ -13,10 +13,11 @@ namespace SymfonyDocsBuilder\Build;
 
 final class BuildConfig
 {
-    private const SYMFONY_REPOSITORY_URL = 'https://github.com/symfony/symfony/blob/{symfonyVersion}/src/%s.php';
+    private const SYMFONY_REPOSITORY_URL = 'https://github.com/symfony/symfony/blob/{symfonyVersion}/src/%s';
 
     private ?string $theme = 'blank';
     private string $format = 'html';
+    private string $defaultHighlightLanguage = 'php';
 
     public function __construct(
         private string $symfonyVersion = '6.1',
@@ -51,5 +52,10 @@ final class BuildConfig
     public function getFormat(): string
     {
         return $this->format;
+    }
+
+    public function getDefaultHighlightLanguage(): string
+    {
+        return $this->defaultHighlightLanguage;
     }
 }
