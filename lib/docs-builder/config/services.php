@@ -33,6 +33,7 @@ use phpDocumentor\Guides\References\ReferenceResolver;
 use phpDocumentor\Guides\References\Resolver\DocResolver;
 use phpDocumentor\Guides\References\Resolver\RefResolver;
 use phpDocumentor\Guides\UrlGenerator;
+use phpDocumentor\Guides\UrlGeneratorInterface;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
@@ -73,6 +74,7 @@ return static function (ContainerConfigurator $container) {
             ->args([tagged_iterator('guides.reference_resolver')])
 
         ->set(UrlGenerator::class)
+        ->alias(UrlGeneratorInterface::class, UrlGenerator::class)
 
         ->set(DocBuilder::class)->public()
     ;
