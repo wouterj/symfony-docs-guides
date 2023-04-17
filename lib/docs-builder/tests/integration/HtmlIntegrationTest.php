@@ -2,7 +2,9 @@
 
 namespace SymfonyDocsBuilder\Tests;
 
+use League\Flysystem\Adapter\Local;
 use PHPUnit\Framework\TestCase;
+use SymfonyDocsBuilder\Build\DynamicBuildEnvironment;
 use SymfonyDocsBuilder\DocBuilder;
 use SymfonyDocsBuilder\DocsKernel;
 use SymfonyDocsBuilder\Test\HtmlAsserter;
@@ -33,6 +35,32 @@ class HtmlIntegrationTest extends TestCase
     {
         foreach ((new Finder())->files()->in(__DIR__.'/fixtures/source/blocks') as $file) {
             yield $file->getRelativePathname() => [$file->getRealPath(), __DIR__.'/fixtures/expected/blocks/'.str_replace('.rst', '.html', $file->getRelativePathname())];
+        }
+    }
+
+    /** @dataProvider provideProjects */
+    public function testProjects(string $directory)
+    {
+        $buildEnvironment = new DynamicBuildEnvironment(new Local(__DIR__.'/fixtures/source/'.$directory));
+        
+        DocsKernel::create()->get(DocBuilder::class)->build($buildEnvironment);
+
+        foreach ((new Finder())->files()->in(__DIR__.'/fixtures/expected/'.$directory) as $file) {
+            $expected = $this->sanitizeHTML($file->getContents());
+            $actual = $this->sanitizeHTML($buildEnvironment->getOutputFilesystem()->read($file->getRelativePathname()));
+
+            $this->assertEquals($expected, $actual);
+        }
+    }
+
+    public function provideProjects(): iterable
+    {
+        foreach ((new Finder())->directories()->in(__DIR__.'/fixtures/source')->depth(0) as $dir) {
+            if ('blocks' === $dir->getBasename()) {
+                continue;
+            }
+
+            yield $dir->getBasename() => [$dir->getBasename()];
         }
     }
 

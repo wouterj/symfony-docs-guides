@@ -2,10 +2,9 @@
 
 namespace SymfonyDocsBuilder;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
 use League\Tactician\CommandBus;
 use SymfonyDocsBuilder\Build\BuildConfig;
+use SymfonyDocsBuilder\Build\BuildEnvironment;
 use SymfonyDocsBuilder\Build\MemoryBuildEnvironment;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
@@ -25,12 +24,9 @@ final class DocBuilder
     ) {
     }
 
-    public function buildString(string $contents): string
+    public function build(BuildEnvironment $buildEnvironment): void
     {
         $this->buildConfig->setTheme('symfonycom');
-
-        $buildEnvironment = new MemoryBuildEnvironment();
-        $buildEnvironment->getSourceFilesystem()->write('/index.rst', $contents);
 
         /** @var list<DocumentNode> $documents */
         $documents = $this->commandBus->handle(new ParseDirectoryCommand($buildEnvironment->getSourceFilesystem(), '/', 'rst'));
@@ -51,6 +47,14 @@ final class DocBuilder
                 )
             ));
         }
+    }
+
+    public function buildString(string $contents): string
+    {
+        $buildEnvironment = new MemoryBuildEnvironment();
+        $buildEnvironment->getSourceFilesystem()->write('/index.rst', $contents);
+
+        $this->build($buildEnvironment);
 
         return $buildEnvironment->getOutputFilesystem()->read('/index.html');
     }
