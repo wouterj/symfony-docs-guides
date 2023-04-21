@@ -11,11 +11,11 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use SymfonyDocsBuilder\Directives\BestPracticeDirective;
 use SymfonyDocsBuilder\Directives\DeprecatedDirective;
 use SymfonyDocsBuilder\Directives\ScreencastDirective;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
-use phpDocumentor\Guides\RestructuredText\Directives\BestPracticeDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\ClassDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Code;
@@ -58,7 +58,6 @@ return static function (ContainerConfigurator $container) {
         ->set(SpanParser::class)
 
         ->set(AdmonitionDirective::class)->tag('guides.directive')
-        ->set(BestPracticeDirective::class)->tag('guides.directive')
         ->set(CautionDirective::class)->tag('guides.directive')
         ->set(ClassDirective::class)->tag('guides.directive')
         ->set(Code::class)->tag('guides.directive')
@@ -89,6 +88,7 @@ return static function (ContainerConfigurator $container) {
         ->set(WarningDirective::class)->tag('guides.directive')
         ->set(Wrap::class)->tag('guides.directive')
 
+        ->set(BestPracticeDirective::class)->tag('guides.directive')
         ->set(VersionAddedDirective::class)->tag('guides.directive')
         ->set(DeprecatedDirective::class)->tag('guides.directive')
         ->set(ScreencastDirective::class)->tag('guides.directive')
