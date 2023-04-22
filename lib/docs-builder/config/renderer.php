@@ -23,6 +23,8 @@ use phpDocumentor\Guides\NodeRenderers\DefaultNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\DelegatingNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\SpanNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\Html\TableNodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\TocEntryRenderer;
+use phpDocumentor\Guides\NodeRenderers\Html\TocNodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\InMemoryNodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
@@ -68,17 +70,21 @@ return static function (ContainerConfigurator $container) use ($vendor) {
                 ])
             ])
 
-        ->set(SpanNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(SpanNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
-        ->set(TableNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(TableNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
-        ->set(TopicNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(TopicNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
-        ->set(AdmonitionNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(AdmonitionNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
-        ->set(SidebarNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(SidebarNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
-        ->set(CodeNodeRenderer::class)->tag('guides.node_renderer')
+        ->set(CodeNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
+
+        ->set(TocNodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
+
+        ->set(TocEntryRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
         ->set('guides.node_renderer.version_changes', TemplateNodeRenderer::class)
             ->args([
@@ -86,11 +92,11 @@ return static function (ContainerConfigurator $container) use ($vendor) {
                 'body/version-change.html.twig',
                 VersionChangeNode::class,
             ])
-            ->tag('guides.node_renderer')
+            ->tag('phpdoc.guides.noderenderer.html')
 
         ->set(InMemoryNodeRendererFactory::class)
             ->args([
-                tagged_iterator('guides.node_renderer'),
+                tagged_iterator('phpdoc.guides.noderenderer.html'),
                 inline_service(DefaultNodeRenderer::class),
             ])
 
@@ -104,20 +110,4 @@ return static function (ContainerConfigurator $container) use ($vendor) {
 
         ->alias(TemplateRenderer::class, TwigTemplateRenderer::class)
     ;
-
-    foreach ((new \phpDocumentor\Guides\Configuration())->htmlNodeTemplates() as $node => $template) {
-        if (CodeNode::class === $node) {
-            continue;
-        }
-
-        $container->services()
-            ->set('guides.node_renderer.'.strtolower(substr($node, strrpos($node, '\\') + 1, -4)), TemplateNodeRenderer::class)
-                ->args([
-                    service(TemplateRenderer::class),
-                    $template,
-                    $node,
-                ])
-                ->tag('guides.node_renderer')
-        ;
-    }
 };

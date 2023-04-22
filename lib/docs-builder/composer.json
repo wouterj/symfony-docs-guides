@@ -19,6 +19,7 @@
         "ext-curl": "*",
         "phpdocumentor/guides": "*@dev",
         "phpdocumentor/guides-restructured-text": "*@dev",
+        "phpdocumentor/guides-symfony": "*@dev",
         "scrivo/highlight.php": "^9.12.0",
         "symfony/config": "^5.2 || ^6.0",
         "symfony/filesystem": "^5.2 || ^6.0",

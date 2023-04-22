@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use phpDocumentor\Guides\DependencyInjection\Compiler\NodeRendererPass;
+use phpDocumentor\Guides\DependencyInjection\Compiler\ParserRulesPass;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
 
@@ -31,6 +33,9 @@ final class DocsKernel
     public static function create(array $extensions = []): self
     {
         $container = new ContainerBuilder();
+        $container->addCompilerPass(new ParserRulesPass());
+        $container->addCompilerPass(new NodeRendererPass());
+
         foreach (array_merge($extensions, [self::createDefaultExtension()]) as $extension) {
             $container->registerExtension($extension);
             $container->loadFromExtension($extension->getAlias());
@@ -67,6 +72,8 @@ final class DocsKernel
                 $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/config'));
                 $loader->load('services.php');
                 $loader->load('parser.php');
+                $loader->load('parser_rules.php');
+                $loader->load('parser_directives.php');
                 $loader->load('compiler.php');
                 $loader->load('renderer.php');
                 $loader->load('command_bus.php');
