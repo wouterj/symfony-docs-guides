@@ -50,98 +50,6 @@
             "time": "2022-05-02T15:47:09+00:00"
         },
         {
-            "name": "doctrine/event-manager",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/event-manager.git",
-                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/event-manager/zipball/95aa4cb529f1e96576f3fda9f5705ada4056a520",
-                "reference": "95aa4cb529f1e96576f3fda9f5705ada4056a520",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/deprecations": "^0.5.3 || ^1",
-                "php": "^7.1 || ^8.0"
-            },
-            "conflict": {
-                "doctrine/common": "<2.9"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^9 || ^10",
-                "phpstan/phpstan": "~1.4.10 || ^1.8.8",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "vimeo/psalm": "^4.24"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                },
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                }
-            ],
-            "description": "The Doctrine Event Manager is a simple PHP event system that was built to be used with the various Doctrine projects.",
-            "homepage": "https://www.doctrine-project.org/projects/event-manager.html",
-            "keywords": [
-                "event",
-                "event dispatcher",
-                "event manager",
-                "event system",
-                "events"
-            ],
-            "support": {
-                "issues": "https://github.com/doctrine/event-manager/issues",
-                "source": "https://github.com/doctrine/event-manager/tree/1.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fevent-manager",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2022-10-12T20:51:15+00:00"
-        },
-        {
             "name": "doctrine/lexer",
             "version": "2.1.0",
             "source": {
@@ -776,14 +684,14 @@
             "dist": {
                 "type": "path",
                 "url": "lib/guides/packages/guides",
-                "reference": "d13468011a44991dcd054f85ee4082063f385f74"
+                "reference": "40e5adc2b858f08f38b3d37a573e92899febd022"
             },
             "require": {
                 "ext-json": "*",
                 "league/flysystem": "^1.0",
                 "league/tactician": "^1.1",
                 "league/uri": "^6.5",
-                "php": "^7.4||^8.0",
+                "php": "^8.1",
                 "phpdocumentor/flyfinder": "^1.1",
                 "psr/event-dispatcher": "^1.0",
                 "symfony/string": "^5.4",
@@ -810,6 +718,7 @@
             "license": [
                 "MIT"
             ],
+            "description": "Contains the core functionality from the phpDocumentor Guides.",
             "homepage": "https://www.phpdoc.org",
             "transport-options": {
                 "relative": true
@@ -821,12 +730,12 @@
             "dist": {
                 "type": "path",
                 "url": "lib/guides/packages/guides-restructured-text",
-                "reference": "1c32d36d174b76cef04f81f7ed958034097e4328"
+                "reference": "8ec8cbf8e95e8ce12f10f0d626ce058242f42df6"
             },
             "require": {
-                "doctrine/event-manager": "^1.2",
                 "doctrine/lexer": "^2.1",
-                "php": "^7.4||^8.0",
+                "php": "^8.1",
+                "phpdocumentor/guides": "dev-main@dev",
                 "webmozart/assert": "^1.11"
             },
             "type": "library",
@@ -845,6 +754,7 @@
             "license": [
                 "MIT"
             ],
+            "description": "Adds reStructuredText Markup support to the phpDocumentor's Guides library.",
             "homepage": "https://www.phpdoc.org",
             "transport-options": {
                 "relative": true
@@ -1140,12 +1050,12 @@
             "dist": {
                 "type": "path",
                 "url": "lib/docs-builder",
-                "reference": "6757b4608e0858d7772b608f0c71b1c66ffc6c2d"
+                "reference": "051849ac7f92804831f6240e243aa078c10e4e9b"
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "php": ">=7.4",
+                "php": ">=8.0",
                 "phpdocumentor/guides": "*@dev",
                 "phpdocumentor/guides-restructured-text": "*@dev",
                 "scrivo/highlight.php": "^9.12.0",
@@ -1161,9 +1071,10 @@
                 "twig/twig": "^2.14 || ^3.3"
             },
             "require-dev": {
-                "gajus/dindent": "^2.0",
+                "league/flysystem-memory": "1.*",
                 "symfony/phpunit-bridge": "^5.2 || ^6.0",
-                "symfony/process": "^5.2 || ^6.0"
+                "symfony/process": "^5.2 || ^6.0",
+                "vimeo/psalm": "^5.9"
             },
             "bin": [
                 "bin/docs-builder"
@@ -1581,16 +1492,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v6.2.8",
+            "version": "v6.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "0e0d0f709997ad1224ef22bb0a28287c44b7840f"
+                "reference": "328bc3795059651d2d4e462e8febdf7ec2d7a626"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/0e0d0f709997ad1224ef22bb0a28287c44b7840f",
-                "reference": "0e0d0f709997ad1224ef22bb0a28287c44b7840f",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/328bc3795059651d2d4e462e8febdf7ec2d7a626",
+                "reference": "328bc3795059651d2d4e462e8febdf7ec2d7a626",
                 "shasum": ""
             },
             "require": {
@@ -1631,7 +1542,7 @@
             "description": "Eases DOM navigation for HTML and XML documents",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dom-crawler/tree/v6.2.8"
+                "source": "https://github.com/symfony/dom-crawler/tree/v6.2.9"
             },
             "funding": [
                 {
@@ -1647,7 +1558,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-09T16:20:02+00:00"
+            "time": "2023-04-11T16:03:19+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1940,16 +1851,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v6.2.8",
+            "version": "v6.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "66391ba3a8862c560e1d9134c96d9bd2a619b477"
+                "reference": "7daf5d24c21a683164688b95bb73b7a4bd3b32fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/66391ba3a8862c560e1d9134c96d9bd2a619b477",
-                "reference": "66391ba3a8862c560e1d9134c96d9bd2a619b477",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/7daf5d24c21a683164688b95bb73b7a4bd3b32fc",
+                "reference": "7daf5d24c21a683164688b95bb73b7a4bd3b32fc",
                 "shasum": ""
             },
             "require": {
@@ -2008,7 +1919,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v6.2.8"
+                "source": "https://github.com/symfony/http-client/tree/v6.2.9"
             },
             "funding": [
                 {
@@ -2024,7 +1935,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-31T09:14:44+00:00"
+            "time": "2023-04-11T16:03:19+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -3065,12 +2976,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "cb21bc93f2fe7c0b9859bce455635cfd4658c2f3"
+                "reference": "c329ed0be95cac22db18587e9eac8f9e4e7669ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/cb21bc93f2fe7c0b9859bce455635cfd4658c2f3",
-                "reference": "cb21bc93f2fe7c0b9859bce455635cfd4658c2f3",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/c329ed0be95cac22db18587e9eac8f9e4e7669ef",
+                "reference": "c329ed0be95cac22db18587e9eac8f9e4e7669ef",
                 "shasum": ""
             },
             "require": {
@@ -3145,7 +3056,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-05T09:41:04+00:00"
+            "time": "2023-04-18T13:59:59+00:00"
         }
     ],
     "aliases": [],

@@ -33,6 +33,7 @@ use phpDocumentor\Guides\Renderer\OutputFormatRenderer;
 use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\AdmonitionNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\SidebarNodeRenderer;
 use phpDocumentor\Guides\RestructuredText\NodeRenderers\Html\TopicNodeRenderer;
+use phpDocumentor\Guides\RestructuredText\Nodes\VersionChangeNode;
 use phpDocumentor\Guides\TemplateRenderer;
 use phpDocumentor\Guides\Twig\AssetsExtension;
 use phpDocumentor\Guides\Twig\EnvironmentBuilder;
@@ -78,6 +79,14 @@ return static function (ContainerConfigurator $container) use ($vendor) {
         ->set(SidebarNodeRenderer::class)->tag('guides.node_renderer')
 
         ->set(CodeNodeRenderer::class)->tag('guides.node_renderer')
+
+        ->set('guides.node_renderer.version_changes', TemplateNodeRenderer::class)
+            ->args([
+                service(TemplateRenderer::class),
+                'body/version-change.html.twig',
+                VersionChangeNode::class,
+            ])
+            ->tag('guides.node_renderer')
 
         ->set(InMemoryNodeRendererFactory::class)
             ->args([

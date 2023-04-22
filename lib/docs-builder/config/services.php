@@ -19,7 +19,6 @@ use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\Command\BuildDocsCommand;
 use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use SymfonyDocsBuilder\DocBuilder;
-use SymfonyDocsBuilder\EventListener\ScreencastAdmonitionListener;
 use SymfonyDocsBuilder\Highlighter\Highlighter;
 use SymfonyDocsBuilder\References\PhpResolver;
 use SymfonyDocsBuilder\References\SymfonyResolver;
@@ -48,7 +47,6 @@ return static function (ContainerConfigurator $container) {
         ->set(LoggerInterface::class, ConsoleLogger::class)
 
         ->set(EventDispatcher::class)
-            ->call('addListener', [PreParseDocument::class, [inline_service(ScreencastAdmonitionListener::class), 'onPreParseDocument']])
         ->alias(EventDispatcherInterface::class, EventDispatcher::class)
 
         ->set(Highlighter::class)

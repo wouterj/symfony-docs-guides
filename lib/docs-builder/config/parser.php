@@ -12,15 +12,14 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use SymfonyDocsBuilder\Directives\BestPracticeDirective;
-use SymfonyDocsBuilder\Directives\DeprecatedDirective;
 use SymfonyDocsBuilder\Directives\ScreencastDirective;
-use SymfonyDocsBuilder\Directives\VersionAddedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\ClassDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Code;
 use phpDocumentor\Guides\RestructuredText\Directives\CodeBlock;
 use phpDocumentor\Guides\RestructuredText\Directives\ContainerDirective;
+use phpDocumentor\Guides\RestructuredText\Directives\DeprecatedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Directive;
 use phpDocumentor\Guides\RestructuredText\Directives\Figure;
 use phpDocumentor\Guides\RestructuredText\Directives\HintDirective;
@@ -40,6 +39,8 @@ use phpDocumentor\Guides\RestructuredText\Directives\Title;
 use phpDocumentor\Guides\RestructuredText\Directives\Toctree;
 use phpDocumentor\Guides\RestructuredText\Directives\TopicDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Uml;
+use phpDocumentor\Guides\RestructuredText\Directives\VersionAddedDirective;
+use phpDocumentor\Guides\RestructuredText\Directives\VersionChangedDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\WarningDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\Wrap;
 use phpDocumentor\Guides\RestructuredText\MarkupLanguageParser;
@@ -87,10 +88,11 @@ return static function (ContainerConfigurator $container) {
         ->set(Uml::class)->tag('guides.directive')
         ->set(WarningDirective::class)->tag('guides.directive')
         ->set(Wrap::class)->tag('guides.directive')
+        ->set(VersionAddedDirective::class)->tag('guides.directive')
+        ->set(VersionChangedDirective::class)->tag('guides.directive')
+        ->set(DeprecatedDirective::class)->tag('guides.directive')
 
         ->set(BestPracticeDirective::class)->tag('guides.directive')
-        ->set(VersionAddedDirective::class)->tag('guides.directive')
-        ->set(DeprecatedDirective::class)->tag('guides.directive')
         ->set(ScreencastDirective::class)->tag('guides.directive')
 
         ->set(MarkupLanguageParser::class)
