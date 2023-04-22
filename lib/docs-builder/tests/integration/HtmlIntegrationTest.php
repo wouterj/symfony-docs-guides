@@ -16,6 +16,15 @@ class HtmlIntegrationTest extends TestCase
     /** @dataProvider provideBlocks */
     public function testBlocks(string $sourceFile, string $expectedFile)
     {
+        $expectedContents = file_get_contents($expectedFile);
+        if (str_starts_with($expectedContents, 'SKIP')) {
+            if ($_SERVER['TEST_ALL'] ?? false) {
+                $expectedContents = strstr($expectedContents, "\n");
+            } else {
+                $this->markTestIncomplete(trim(substr(strstr($expectedContents, "\n", true), 4)));
+            }
+        }
+
         $generatedContents = DocsKernel::create()->get(DocBuilder::class)->buildString(file_get_contents($sourceFile));
         $generated = new \DOMDocument();
         $generated->loadHTML($generatedContents, \LIBXML_NOERROR);
@@ -23,7 +32,7 @@ class HtmlIntegrationTest extends TestCase
         $generatedHtml = $this->sanitizeHTML($generated->saveHTML());
 
         $expected = new \DOMDocument();
-        $expectedContents = "<!DOCTYPE html>\n<html>\n<body>\n".file_get_contents($expectedFile)."\n</body>\n</html>";
+        $expectedContents = "<!DOCTYPE html>\n<html>\n<body>\n".$expectedContents."\n</body>\n</html>";
         $expected->loadHTML($expectedContents, \LIBXML_NOERROR);
         $expected->preserveWhiteSpace = false;
         $expectedHtml = $this->sanitizeHTML($expected->saveHTML());

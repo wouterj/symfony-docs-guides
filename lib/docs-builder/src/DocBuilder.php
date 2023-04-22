@@ -31,7 +31,7 @@ final class DocBuilder
         /** @var list<DocumentNode> $documents */
         $documents = $this->commandBus->handle(new ParseDirectoryCommand($buildEnvironment->getSourceFilesystem(), '/', 'rst'));
 
-        $this->commandBus->handle(new CompileDocumentsCommand($documents));
+        $documents = $this->commandBus->handle(new CompileDocumentsCommand($documents));
 
         foreach ($documents as $document) {
             $this->commandBus->handle(new RenderDocumentCommand(

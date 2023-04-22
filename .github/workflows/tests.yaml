@@ -32,4 +32,4 @@ jobs:
                   ./vendor/bin/simple-phpunit install
 
             - name: PHPUnit
-              run: cd lib/docs-builder && vendor/bin/simple-phpunit
+              run: cd lib/docs-builder && vendor/bin/simple-phpunit --testdox
