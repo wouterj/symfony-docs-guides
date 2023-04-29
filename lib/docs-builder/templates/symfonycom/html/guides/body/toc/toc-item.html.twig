@@ -1,0 +1,8 @@
+<li>
+    <a href="{{ url }}">{{ renderNode(node.value.value) }}</a>
+    {% if node.children|length %}
+        {% include "body/toc/toc-level.html.twig" with {
+            tocItems:tocItem.children
+        } %}
+    {% endif %}
+</li>

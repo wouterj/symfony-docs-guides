@@ -58,7 +58,7 @@ class HtmlIntegrationTest extends TestCase
             $expected = $this->sanitizeHTML($file->getContents());
             $actual = $this->sanitizeHTML($buildEnvironment->getOutputFilesystem()->read($file->getRelativePathname()));
 
-            $this->assertEquals($expected, $actual);
+            $this->assertEquals($expected, $actual, 'File: '.$file->getRelativePathname());
         }
     }
 
