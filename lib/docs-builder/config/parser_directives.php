@@ -16,7 +16,6 @@ use SymfonyDocsBuilder\Directives\ScreencastDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\AdmonitionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\CautionDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\ClassDirective;
-use phpDocumentor\Guides\RestructuredText\Directives\Code;
 use phpDocumentor\Guides\RestructuredText\Directives\CodeBlock;
 use phpDocumentor\Guides\RestructuredText\Directives\ContainerDirective;
 use phpDocumentor\Guides\RestructuredText\Directives\DeprecatedDirective;
@@ -55,7 +54,6 @@ return static function (ContainerConfigurator $container) {
         ->set(AdmonitionDirective::class)->tag('guides.directive')
         ->set(CautionDirective::class)->tag('guides.directive')
         ->set(ClassDirective::class)->tag('guides.directive')
-        ->set(Code::class)->tag('guides.directive')
         ->set(CodeBlock::class)->tag('guides.directive')
         ->set(ContainerDirective::class)->tag('guides.directive')
         ->set(Figure::class)->tag('guides.directive')
