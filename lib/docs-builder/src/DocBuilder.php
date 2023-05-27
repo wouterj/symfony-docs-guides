@@ -3,7 +3,6 @@
 namespace SymfonyDocsBuilder;
 
 use League\Tactician\CommandBus;
-use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\Build\BuildEnvironment;
 use SymfonyDocsBuilder\Build\MemoryBuildEnvironment;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
@@ -12,21 +11,22 @@ use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\UrlGenerator;
+use phpDocumentor\Guides\Twig\ThemeManager;
+use phpDocumentor\Guides\UrlGeneratorInterface;
 
 final class DocBuilder
 {
     public function __construct(
         private CommandBus $commandBus,
-        private BuildConfig $buildConfig,
+        private ThemeManager $themeManager,
         private Metas $metas,
-        private UrlGenerator $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
     public function build(BuildEnvironment $buildEnvironment): void
     {
-        $this->buildConfig->setTheme('symfonycom');
+        $this->themeManager->useTheme('symfonycom');
 
         /** @var list<DocumentNode> $documents */
         $documents = $this->commandBus->handle(new ParseDirectoryCommand($buildEnvironment->getSourceFilesystem(), '/', 'rst'));

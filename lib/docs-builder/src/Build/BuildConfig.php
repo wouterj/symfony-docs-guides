@@ -15,7 +15,6 @@ final class BuildConfig
 {
     private const SYMFONY_REPOSITORY_URL = 'https://github.com/symfony/symfony/blob/{symfonyVersion}/src/%s';
 
-    private ?string $theme = 'blank';
     private string $format = 'html';
     private string $defaultHighlightLanguage = 'php';
 
@@ -29,11 +28,6 @@ final class BuildConfig
         $this->symfonyVersion = $symfonyVersion;
     }
 
-    public function setTheme(?string $theme): void
-    {
-        $this->theme = $theme;
-    }
-
     public function getSymfonyVersion(): string
     {
         return $this->symfonyVersion;
@@ -42,11 +36,6 @@ final class BuildConfig
     public function getSymfonyRepositoryUrl(): string
     {
         return str_replace('{symfonyVersion}', $this->getSymfonyVersion(), self::SYMFONY_REPOSITORY_URL);
-    }
-
-    public function getTheme(): ?string
-    {
-        return $this->theme;
     }
 
     public function getFormat(): string

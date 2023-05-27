@@ -11,18 +11,19 @@
 
 namespace SymfonyDocsBuilder;
 
-use SymfonyDocsBuilder\DependencyInjection\GuidesExtension;
+use SymfonyDocsBuilder\DependencyInjection\SymfonyExtension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use phpDocumentor\Guides\DependencyInjection\Compiler\NodeRendererPass;
-use phpDocumentor\Guides\DependencyInjection\Compiler\ParserRulesPass;
+use phpDocumentor\Guides\DependencyInjection\GuidesExtension;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactory;
 use phpDocumentor\Guides\NodeRenderers\NodeRendererFactoryAware;
+use phpDocumentor\Guides\RestructuredText\DependencyInjection\ReStructuredTextExtension;
 
 final class DocsKernel
 {
@@ -33,12 +34,21 @@ final class DocsKernel
     public static function create(array $extensions = []): self
     {
         $container = new ContainerBuilder();
-        $container->addCompilerPass(new ParserRulesPass());
-        $container->addCompilerPass(new NodeRendererPass());
 
-        foreach (array_merge($extensions, [self::createDefaultExtension()]) as $extension) {
+        for ($i = 1; $i <= 4; $i++) {
+            if (is_dir($vendor = dirname(__DIR__, $i).'/vendor')) {
+                $container->setParameter('vendor_dir', $vendor);
+                break;
+            }
+        }
+
+        foreach (array_merge($extensions, self::createDefaultExtensions()) as $extension) {
             $container->registerExtension($extension);
             $container->loadFromExtension($extension->getAlias());
+
+            if ($extension instanceof CompilerPassInterface) {
+                $container->addCompilerPass($extension);
+            }
         }
 
         $container->compile();
@@ -59,28 +69,13 @@ final class DocsKernel
         return $this->container->get($fqcn);
     }
 
-    private static function createDefaultExtension(): ExtensionInterface
+    /** @return list<ExtensionInterface> */
+    private static function createDefaultExtensions(): array
     {
-        return new class extends Extension {
-            public function getAlias(): string
-            {
-                return 'default';
-            }
-
-            public function load(array $configs, ContainerBuilder $container): void
-            {
-                $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/config'));
-                $loader->load('services.php');
-                $loader->load('parser.php');
-                $loader->load('parser_rules.php');
-                $loader->load('parser_directives.php');
-                $loader->load('compiler.php');
-                $loader->load('renderer.php');
-                $loader->load('command_bus.php');
-
-                $container->registerForAutoconfiguration(NodeRendererFactoryAware::class)
-                    ->addMethodCall('setNodeRendererFactory', [new Reference(NodeRendererFactory::class)]);
-            }
-        };
+        return [
+            new GuidesExtension(),
+            new ReStructuredTextExtension(),
+            new SymfonyExtension(),
+        ];
     }
 }

@@ -32,7 +32,7 @@ use phpDocumentor\Guides\Handlers\ParseFileCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\UrlGenerator;
+use phpDocumentor\Guides\UrlGeneratorInterface;
 
 class BuildDocsCommand extends Command
 {
@@ -42,7 +42,7 @@ class BuildDocsCommand extends Command
         private CommandBus $commandBus,
         private BuildConfig $buildConfig,
         private Metas $metas,
-        private UrlGenerator $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
         private LoggerInterface $logger,
     ) {
         parent::__construct('build:docs');

@@ -50,6 +50,7 @@ class CodeNodeRenderer implements NodeRenderer
                 'code' => rtrim($code),
                 'line_numbers' => $lineNumbers,
                 'loc' => $numOfLines,
+                'node' => $node,
             ]
         );
     }
