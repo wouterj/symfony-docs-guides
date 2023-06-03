@@ -32,15 +32,18 @@ use phpDocumentor\Guides\Handlers\ParseFileCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\RenderContext;
+use phpDocumentor\Guides\Twig\ThemeManager;
 use phpDocumentor\Guides\UrlGeneratorInterface;
 
 class BuildDocsCommand extends Command
 {
     private BuildEnvironment $buildEnvironment;
+    private string $theme = 'rtd';
 
     public function __construct(
         private CommandBus $commandBus,
         private BuildConfig $buildConfig,
+        private ThemeManager $themeManager,
         private Metas $metas,
         private UrlGeneratorInterface $urlGenerator,
         private LoggerInterface $logger,
@@ -52,7 +55,7 @@ class BuildDocsCommand extends Command
     {
         $this
             ->addOption('symfony-version', null, InputOption::VALUE_REQUIRED, 'The version of Symfony')
-            ->addOption('no-theme', null, InputOption::VALUE_NONE, 'Use the default theme instead of the styled one')
+            ->addOption('no-theme', null, InputOption::VALUE_NONE, 'Use the symfony theme instead of the styled one')
             ->addOption('clear-cache', null, InputOption::VALUE_NONE)
             ->addArgument('source-dir', InputArgument::OPTIONAL, 'RST files Source directory', getcwd())
             ->addArgument('output-dir', InputArgument::OPTIONAL, 'HTML files output directory')
@@ -70,10 +73,9 @@ class BuildDocsCommand extends Command
         }
 
         if ($input->getOption('no-theme')) {
-            $this->buildConfig->setTheme(null);
-        } else {
-            $this->buildConfig->setTheme('rtd');
+            $this->theme = 'symfonycom';
         }
+        $this->themeManager->useTheme($this->theme);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -131,7 +133,7 @@ class BuildDocsCommand extends Command
 
     private function renderThemeAssets(): void
     {
-        $assetsFilesystem = new Filesystem(new Local(__DIR__.'/../../templates/'.$this->buildConfig->getTheme()));
+        $assetsFilesystem = new Filesystem(new Local(__DIR__.'/../../templates/'.$this->theme));
         $assetsFilesystem->addPlugin(new Finder());
 
         $outputFilesystem = $this->buildEnvironment->getOutputFilesystem();

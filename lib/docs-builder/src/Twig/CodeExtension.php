@@ -25,7 +25,7 @@ class CodeExtension extends AbstractExtension
 
     public function highlight(string $code, ?string $language): string
     {
-        return $this->highlighter->highlight($language ?? $this->buildConfig->getDefaultHighlightLanguage(), $code);
+        return $this->highlighter->highlight($language ?? $this->buildConfig->getDefaultHighlightLanguage(), $code)->code;
     }
 
     public function fqcn(string $fqcn): string
