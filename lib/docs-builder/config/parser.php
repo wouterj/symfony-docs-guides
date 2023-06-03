@@ -11,11 +11,16 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use phpDocumentor\Guides\RestructuredText\TextRoles\TextRole;
+
 return static function (ContainerConfigurator $container) {
     $container->services()
         ->defaults()->autowire()
 
         ->load('SymfonyDocsBuilder\\Directives\\', '../src/Directives')
             ->tag('phpdoc.guides.directive')
+
+        ->load('SymfonyDocsBuilder\\TextRole\\', '../src/TextRole')
+            ->tag('phpdoc.guides.parser.rst.text_role')
     ;
 };

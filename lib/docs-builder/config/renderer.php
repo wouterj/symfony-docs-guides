@@ -14,26 +14,19 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Highlight\Highlighter as HighlightPHP;
 use SymfonyDocsBuilder\Highlighter\Highlighter;
 use SymfonyDocsBuilder\NodeRenderer\CodeNodeRenderer;
-use SymfonyDocsBuilder\References\PhpResolver;
-use SymfonyDocsBuilder\References\SymfonyResolver;
 use SymfonyDocsBuilder\Twig\CodeExtension;
 use SymfonyDocsBuilder\Twig\UrlExtension;
 use Twig\Extension\ExtensionInterface;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
-use phpDocumentor\Guides\References\Resolver\Resolver;
 
 return static function (ContainerConfigurator $container) {
     $container ->services()
         ->defaults()->autowire()->autoconfigure()
         ->instanceof(ExtensionInterface::class)->tag('twig.extension')
-        ->instanceof(Resolver::class)->tag('phpdoc.guides.reference.resolver')
         ->instanceof(NodeRenderer::class)->tag('phpdoc.guides.noderenderer.html')
 
         ->set(CodeExtension::class)
         ->set(UrlExtension::class)
-
-        ->set(SymfonyResolver::class)
-        ->set(PhpResolver::class)
 
         ->set(CodeNodeRenderer::class)
 
