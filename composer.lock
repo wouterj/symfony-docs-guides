@@ -1052,7 +1052,7 @@
             "dist": {
                 "type": "path",
                 "url": "lib/docs-builder",
-                "reference": "0025dff7467803aed83a9abe3c677197a4e579e9"
+                "reference": "5bbbe6fd2df859bd94c6f5f3527235085eae1807"
             },
             "require": {
                 "ext-curl": "*",
@@ -1070,6 +1070,8 @@
                 "symfony/filesystem": "^5.2 || ^6.0",
                 "symfony/finder": "^5.2 || ^6.0",
                 "symfony/http-client": "^5.2 || ^6.0",
+                "symfony/string": "^5.4 || ^6.0",
+                "twig/string-extra": "^3.6",
                 "twig/twig": "^2.14 || ^3.3"
             },
             "require-dev": {
@@ -2807,6 +2809,73 @@
                 }
             ],
             "time": "2023-04-21T08:48:44+00:00"
+        },
+        {
+            "name": "twig/string-extra",
+            "version": "v3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/string-extra.git",
+                "reference": "fab682645b3f8730fbdb7bf9ec8fe668d6f76638"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/fab682645b3f8730fbdb7bf9ec8fe668d6f76638",
+                "reference": "fab682645b3f8730fbdb7bf9ec8fe668d6f76638",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/string": "^5.0|^6.0",
+                "symfony/translation-contracts": "^1.1|^2|^3",
+                "twig/twig": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twig\\Extra\\String\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A Twig extension for Symfony String",
+            "homepage": "https://twig.symfony.com",
+            "keywords": [
+                "html",
+                "string",
+                "twig",
+                "unicode"
+            ],
+            "support": {
+                "source": "https://github.com/twigphp/string-extra/tree/v3.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-02-09T06:45:16+00:00"
         },
         {
             "name": "twig/twig",

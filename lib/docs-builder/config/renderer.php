@@ -14,10 +14,13 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Highlight\Highlighter as HighlightPHP;
 use SymfonyDocsBuilder\Highlighter\Highlighter;
 use SymfonyDocsBuilder\NodeRenderer\CodeNodeRenderer;
+use SymfonyDocsBuilder\Node\ConfigurationBlockNode;
 use SymfonyDocsBuilder\Twig\CodeExtension;
 use SymfonyDocsBuilder\Twig\UrlExtension;
 use Twig\Extension\ExtensionInterface;
+use Twig\Extra\String\StringExtension;
 use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
+use phpDocumentor\Guides\NodeRenderers\TemplateNodeRenderer;
 
 return static function (ContainerConfigurator $container) {
     $container ->services()
@@ -27,8 +30,13 @@ return static function (ContainerConfigurator $container) {
 
         ->set(CodeExtension::class)
         ->set(UrlExtension::class)
+        ->set(StringExtension::class)
 
         ->set(CodeNodeRenderer::class)
+
+        ->set('symfony.node_renderer.html.configuration_block', TemplateNodeRenderer::class)
+            ->arg('$template', 'body/configuration-block.html.twig')
+            ->arg('$nodeClass', ConfigurationBlockNode::class)
 
         ->set(Highlighter::class)
             ->args([
