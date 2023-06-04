@@ -3,6 +3,7 @@
 namespace SymfonyDocsBuilder\Tests;
 
 use League\Flysystem\Adapter\Local;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use SymfonyDocsBuilder\Build\DynamicBuildEnvironment;
 use SymfonyDocsBuilder\DocBuilder;
@@ -17,27 +18,35 @@ class HtmlIntegrationTest extends TestCase
     public function testBlocks(string $sourceFile, string $expectedFile)
     {
         $expectedContents = file_get_contents($expectedFile);
+        $skip = false;
         if (str_starts_with($expectedContents, 'SKIP')) {
-            if ($_SERVER['TEST_ALL'] ?? false) {
-                $expectedContents = strstr($expectedContents, "\n");
-            } else {
-                $this->markTestIncomplete(trim(substr(strstr($expectedContents, "\n", true), 4)));
-            }
+            $skip = trim(substr(strstr($expectedContents, "\n", true), 4));
+            $expectedContents = strstr($expectedContents, "\n");
         }
 
-        $generatedContents = DocsKernel::create()->get(DocBuilder::class)->buildString(file_get_contents($sourceFile));
-        $generated = new \DOMDocument();
-        $generated->loadHTML($generatedContents, \LIBXML_NOERROR);
-        $generated->preserveWhiteSpace = false;
-        $generatedHtml = $this->sanitizeHTML($generated->saveHTML());
+        try {
+            $generatedContents = DocsKernel::create()->get(DocBuilder::class)->buildString(file_get_contents($sourceFile));
+            $generated = new \DOMDocument();
+            $generated->loadHTML($generatedContents, \LIBXML_NOERROR);
+            $generated->preserveWhiteSpace = false;
+            $generatedHtml = $this->sanitizeHTML($generated->saveHTML());
 
-        $expected = new \DOMDocument();
-        $expectedContents = "<!DOCTYPE html>\n<html>\n<body>\n".$expectedContents."\n</body>\n</html>";
-        $expected->loadHTML($expectedContents, \LIBXML_NOERROR);
-        $expected->preserveWhiteSpace = false;
-        $expectedHtml = $this->sanitizeHTML($expected->saveHTML());
+            $expected = new \DOMDocument();
+            $expectedContents = "<!DOCTYPE html>\n<html>\n<body>\n".$expectedContents."\n</body>\n</html>";
+            $expected->loadHTML($expectedContents, \LIBXML_NOERROR);
+            $expected->preserveWhiteSpace = false;
+            $expectedHtml = $this->sanitizeHTML($expected->saveHTML());
 
-        $this->assertEquals($expectedHtml, $generatedHtml);
+            $this->assertEquals($expectedHtml, $generatedHtml);
+        } catch (ExpectationFailedException $e) {
+            if (false !== $skip) {
+                $this->markTestIncomplete($skip);
+            }
+
+            throw $e;
+        }
+
+        $this->assertFalse($skip, 'Test passes while marked as SKIP.');
     }
 
     public static function provideBlocks(): iterable
@@ -54,12 +63,28 @@ class HtmlIntegrationTest extends TestCase
         
         DocsKernel::create()->get(DocBuilder::class)->build($buildEnvironment);
 
-        foreach ((new Finder())->files()->in(__DIR__.'/fixtures/expected/'.$directory) as $file) {
-            $expected = $this->sanitizeHTML($file->getContents());
-            $actual = $this->sanitizeHTML($buildEnvironment->getOutputFilesystem()->read($file->getRelativePathname()));
-
-            $this->assertEquals($expected, $actual, 'File: '.$file->getRelativePathname());
+        $expectedDirectory = __DIR__.'/fixtures/expected/'.$directory;
+        $skip = false;
+        if (file_exists($expectedDirectory.'/skip')) {
+            $skip = file_get_contents($expectedDirectory.'/skip');
         }
+
+        try {
+            foreach ((new Finder())->files()->in($expectedDirectory) as $file) {
+                $expected = $this->sanitizeHTML($file->getContents());
+                $actual = $this->sanitizeHTML($buildEnvironment->getOutputFilesystem()->read($file->getRelativePathname()));
+
+                $this->assertEquals($expected, $actual, 'File: '.$file->getRelativePathname());
+            }
+        } catch (ExpectationFailedException $e) {
+            if (false !== $skip) {
+                $this->markTestIncomplete($skip);
+            }
+
+            throw $e;
+        }
+
+        $this->assertFalse($skip, 'Test passes while marked as SKIP.');
     }
 
     public function provideProjects(): iterable
