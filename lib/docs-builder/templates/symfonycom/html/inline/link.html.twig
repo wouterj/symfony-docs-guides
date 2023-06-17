@@ -1,7 +1,3 @@
-{% set class = (attributes.class|default ? attributes.class ~ ' ') ~ 'reference ' ~ (url is safe_url ? 'internal' : 'external') %}
-<a href="{{ url|raw }}" class="{{ class }}"
-    {%- for key, value in attributes|filter((v, key) => key != 'class') %} {{ key }}="{{ value }}"{% endfor -%}
-    {%- if url is not safe_url %} rel="external noopener noreferrer" target="_blank"{% endif -%}
->
-    {{- text|raw -}}
-</a>
+{% import "_helpers.twig" as helpers %}
+
+{{ helpers.link(node.url, node.value, { class: node.classes|join(' '), title: node.title }|filter(v => v != '')) }}

@@ -3,15 +3,16 @@
 namespace SymfonyDocsBuilder;
 
 use League\Tactician\CommandBus;
+use SymfonyDocsBuilder\Build\BuildConfig;
 use SymfonyDocsBuilder\Build\BuildEnvironment;
 use SymfonyDocsBuilder\Build\MemoryBuildEnvironment;
+use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
-use phpDocumentor\Guides\Metas;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\Twig\ThemeManager;
+use phpDocumentor\Guides\Twig\Theme\ThemeManager;
 use phpDocumentor\Guides\UrlGeneratorInterface;
 
 final class DocBuilder
@@ -19,7 +20,7 @@ final class DocBuilder
     public function __construct(
         private CommandBus $commandBus,
         private ThemeManager $themeManager,
-        private Metas $metas,
+        private BuildConfig $buildConfig,
         private UrlGeneratorInterface $urlGenerator,
     ) {
     }
@@ -28,10 +29,12 @@ final class DocBuilder
     {
         $this->themeManager->useTheme('symfonycom');
 
-        /** @var list<DocumentNode> $documents */
-        $documents = $this->commandBus->handle(new ParseDirectoryCommand($buildEnvironment->getSourceFilesystem(), '/', 'rst'));
+        $projectNode = $this->buildConfig->createProjectNode();
 
-        $documents = $this->commandBus->handle(new CompileDocumentsCommand($documents));
+        /** @var list<DocumentNode> $documents */
+        $documents = $this->commandBus->handle(new ParseDirectoryCommand($buildEnvironment->getSourceFilesystem(), '/', 'rst', $projectNode));
+
+        $documents = $this->commandBus->handle(new CompileDocumentsCommand($documents, new CompilerContext($projectNode)));
 
         foreach ($documents as $document) {
             $this->commandBus->handle(new RenderDocumentCommand(
@@ -41,9 +44,9 @@ final class DocBuilder
                     $buildEnvironment->getSourceFilesystem(),
                     $buildEnvironment->getOutputFilesystem(),
                     '/',
-                    $this->metas,
                     $this->urlGenerator,
-                    'html'
+                    'html',
+                    $projectNode
                 )
             ));
         }

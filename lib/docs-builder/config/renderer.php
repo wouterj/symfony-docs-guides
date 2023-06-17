@@ -15,6 +15,7 @@ use Highlight\Highlighter as HighlightPHP;
 use SymfonyDocsBuilder\Highlighter\Highlighter;
 use SymfonyDocsBuilder\NodeRenderer\CodeNodeRenderer;
 use SymfonyDocsBuilder\Node\ConfigurationBlockNode;
+use SymfonyDocsBuilder\Node\ExternalLinkNode;
 use SymfonyDocsBuilder\Twig\CodeExtension;
 use SymfonyDocsBuilder\Twig\UrlExtension;
 use Twig\Extension\ExtensionInterface;
@@ -37,6 +38,10 @@ return static function (ContainerConfigurator $container) {
         ->set('symfony.node_renderer.html.configuration_block', TemplateNodeRenderer::class)
             ->arg('$template', 'body/configuration-block.html.twig')
             ->arg('$nodeClass', ConfigurationBlockNode::class)
+
+        ->set('symfony.node_renderer.html.inline.external_link', TemplateNodeRenderer::class)
+            ->arg('$template', 'inline/external-link.html.twig')
+            ->arg('$nodeClass', ExternalLinkNode::class)
 
         ->set(Highlighter::class)
             ->args([

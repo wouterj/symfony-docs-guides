@@ -26,25 +26,26 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\ParseFileCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
-use phpDocumentor\Guides\Metas;
+use phpDocumentor\Guides\Nodes\ProjectNode;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\Twig\ThemeManager;
+use phpDocumentor\Guides\Twig\Theme\ThemeManager;
 use phpDocumentor\Guides\UrlGeneratorInterface;
 
 class BuildDocsCommand extends Command
 {
     private BuildEnvironment $buildEnvironment;
+    private ProjectNode $projectNode;
     private string $theme = 'rtd';
 
     public function __construct(
         private CommandBus $commandBus,
         private BuildConfig $buildConfig,
         private ThemeManager $themeManager,
-        private Metas $metas,
         private UrlGeneratorInterface $urlGenerator,
         private LoggerInterface $logger,
     ) {
@@ -76,6 +77,8 @@ class BuildDocsCommand extends Command
             $this->theme = 'symfonycom';
         }
         $this->themeManager->useTheme($this->theme);
+
+        $this->projectNode = $this->buildConfig->createProjectNode();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -97,12 +100,12 @@ class BuildDocsCommand extends Command
 
     private function parse(Filesystem $sourceFilesystem): array
     {
-        return $this->commandBus->handle(new ParseDirectoryCommand($sourceFilesystem, '/', 'rst'));
+        return $this->commandBus->handle(new ParseDirectoryCommand($sourceFilesystem, '/', 'rst', $this->projectNode));
     }
 
     private function compile(array $documents): array
     {
-        return $this->commandBus->handle(new CompileDocumentsCommand($documents));
+        return $this->commandBus->handle(new CompileDocumentsCommand($documents, new CompilerContext($this->projectNode)));
     }
 
     private function render(array $documents): bool
@@ -117,9 +120,9 @@ class BuildDocsCommand extends Command
                         $this->buildEnvironment->getSourceFilesystem(),
                         $this->buildEnvironment->getOutputFilesystem(),
                         '/',
-                        $this->metas,
                         $this->urlGenerator,
-                        'html'
+                        'html',
+                        $this->projectNode
                     )
                 ));
             } catch (\Throwable $e) {

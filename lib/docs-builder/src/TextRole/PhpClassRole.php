@@ -3,8 +3,8 @@
 namespace SymfonyDocsBuilder\TextRole;
 
 use SymfonyDocsBuilder\Build\BuildConfig;
-use SymfonyDocsBuilder\Node\ExternalLinkToken;
-use phpDocumentor\Guides\Nodes\InlineToken\InlineMarkupToken;
+use SymfonyDocsBuilder\Node\ExternalLinkNode;
+use phpDocumentor\Guides\Nodes\Inline\InlineNode;
 use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\RestructuredText\TextRoles\TextRole;
 
@@ -15,11 +15,11 @@ class PhpClassRole implements TextRole
     ) {
     }
 
-    public function processNode(ParserContext $parserContext, string $id, string $role, string $content): InlineMarkupToken
+    public function processNode(ParserContext $parserContext, string $role, string $content, string $rawContent): InlineNode
     {
         $url = 'https://php.net/class.'.strtolower($content);
 
-        return new ExternalLinkToken($id, $url, $content, $content);
+        return new ExternalLinkNode($url, $content, $content);
     }
 
     public function getName(): string

@@ -3,8 +3,8 @@
 namespace SymfonyDocsBuilder\TextRole;
 
 use SymfonyDocsBuilder\Build\BuildConfig;
-use SymfonyDocsBuilder\Node\ExternalLinkToken;
-use phpDocumentor\Guides\Nodes\InlineToken\InlineMarkupToken;
+use SymfonyDocsBuilder\Node\ExternalLinkNode;
+use phpDocumentor\Guides\Nodes\Inline\InlineNode;
 use phpDocumentor\Guides\ParserContext;
 use phpDocumentor\Guides\RestructuredText\TextRoles\TextRole;
 use function Symfony\Component\String\u;
@@ -16,14 +16,14 @@ class MethodRole implements TextRole
     ) {
     }
 
-    public function processNode(ParserContext $parserContext, string $id, string $role, string $content): InlineMarkupToken
+    public function processNode(ParserContext $parserContext, string $role, string $content, string $rawContent): InlineNode
     {
         [$fqcn, $method] = u($content)->replace('\\\\', '\\')->split('::', 2);
 
         $filename = sprintf('%s.php#:~:text=%s', $fqcn->replace('\\', '/'), rawurlencode('function '.$method));
         $url = sprintf($this->buildConfig->getSymfonyRepositoryUrl(), $filename);
 
-        return new ExternalLinkToken($id, $url, $method.'()', $fqcn.'::'.$method.'()');
+        return new ExternalLinkNode($url, $method.'()', $fqcn.'::'.$method.'()');
     }
 
     public function getName(): string

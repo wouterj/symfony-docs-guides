@@ -2,17 +2,16 @@
 
 namespace SymfonyDocsBuilder\Node;
 
-use phpDocumentor\Guides\Nodes\InlineToken\AbstractLinkToken;
+use phpDocumentor\Guides\Nodes\Inline\AbstractLinkInlineNode;
 
-class ExternalLinkToken extends AbstractLinkToken
+class ExternalLinkNode extends AbstractLinkInlineNode
 {
     public function __construct(
-        string $id,
         private string $url,
-        private string $text,
+        string $text,
         private string $title,
     ) {
-        parent::__construct('external-link', $id, []);
+        parent::__construct('external-link', $text);
     }
 
     public function getUrl(): string
@@ -22,7 +21,7 @@ class ExternalLinkToken extends AbstractLinkToken
 
     public function getText(): string
     {
-        return $this->text;
+        return $this->getValue();
     }
 
     public function getTitle(): string

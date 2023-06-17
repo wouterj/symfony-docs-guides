@@ -11,6 +11,8 @@
 
 namespace SymfonyDocsBuilder\Build;
 
+use phpDocumentor\Guides\Nodes\ProjectNode;
+
 final class BuildConfig
 {
     private const SYMFONY_REPOSITORY_URL = 'https://github.com/symfony/symfony/blob/{symfonyVersion}/src/%s';
@@ -46,5 +48,10 @@ final class BuildConfig
     public function getDefaultHighlightLanguage(): string
     {
         return $this->defaultHighlightLanguage;
+    }
+
+    public function createProjectNode(): ProjectNode
+    {
+        return new ProjectNode('Symfony', $this->symfonyVersion);
     }
 }
