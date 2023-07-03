@@ -2,15 +2,21 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "symfony-tools/docs-builder": "*",
+        "symfony-tools/guides-extension": "*",
+        "phpdocumentor/guides-cli": "*",
         "league/flysystem-memory": "1.*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "6.3.x-dev",
+        "nunomaduro/collision": "^5.11"
     },
     "repositories": [
         { "type": "path", "url": "lib/guides/packages/guides" },
+        { "type": "path", "url": "lib/guides/packages/guides-cli" },
         { "type": "path", "url": "lib/guides/packages/guides-restructured-text" },
-        { "type": "path", "url": "lib/docs-builder" }
+        { "type": "path", "url": "lib/symfony-extension" }
     ],
-    "require-dev": {
-        "symfony/var-dumper": "6.3.x-dev"
+    "autoload-dev": {
+        "files": ["lib/bootstrap.php"]
     }
 }
