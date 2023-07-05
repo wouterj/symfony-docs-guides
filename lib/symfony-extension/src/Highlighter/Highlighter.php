@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 final class Highlighter
 {
     private const LANGUAGES_MAPPING = [
+        'annotation' => 'php',
+        'attribute' => 'php',
         'env' => 'bash',
         'html+jinja' => 'twig',
         'html+twig' => 'twig',

@@ -14,6 +14,8 @@ use phpDocumentor\Guides\RestructuredText\Parser\Directive;
 class ConfigurationBlockDirective extends SubDirective
 {
     private const LANGUAGE_LABELS = [
+        'annotation' => 'Annotations',
+        'attribute' => 'Attributes',
         'caddy' => 'Caddy',
         'env' => 'Bash',
         'html+jinja' => 'Twig',
