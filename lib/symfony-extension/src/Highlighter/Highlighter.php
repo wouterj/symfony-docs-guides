@@ -59,10 +59,20 @@ final class Highlighter
 
             return new HighlightResult($highlightLanguage, $highlight->value);
         } catch (\Throwable $e) {
-            $this->logger->error('Error highlighting {language} code block', [
+            $this->logger->error(<<<'MESSAGE'
+                Error highlighting {language} code block!
+
+                Code:
+
+                ```
+                {code}
+                ```
+
+                {exception}
+                MESSAGE, [
                 'language' => $language,
                 'code' => $code,
-                'error' => $e,
+                'exception' => $e,
             ]);
 
             return new HighlightResult($language, $code);
