@@ -62,7 +62,7 @@ final class Highlighter
             $this->logger->error('Error highlighting {language} code block', [
                 'language' => $language,
                 'code' => $code,
-                'error' => $e,
+                'exception' => $e,
             ]);
 
             return new HighlightResult($language, $code);
