@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <guides>
+    <extension class="phpDocumentor\Guides\RestructuredText"
+        default-code-language="php"
+    />
+
     <extension class="SymfonyTools\GuidesExtension\DependencyInjection\SymfonyExtension"/>
 </guides>
