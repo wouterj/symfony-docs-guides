@@ -1,4 +1,4 @@
-name: Docs Builder Tests
+name: Tests
 
 on:
     push:
@@ -7,11 +7,11 @@ on:
 
 jobs:
     tests:
-        name: Tests
+        name: SymfonyExtension
         runs-on: ubuntu-latest
-
-        strategy:
-            fail-fast: false
+        defaults:
+            run:
+                working-directory: ./lib/symfony-extension
 
         steps:
             - name: 'Checkout code'
@@ -27,9 +27,34 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  cd lib/docs-builder
                   composer install --no-progress
                   ./vendor/bin/simple-phpunit install
 
             - name: PHPUnit
-              run: cd lib/docs-builder && vendor/bin/simple-phpunit --testdox
+              run: vendor/bin/simple-phpunit --testdox
+
+    docs-build:
+        name: Build docs
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 'Checkout code'
+              uses: actions/checkout@v3
+              with:
+                  submodules: true
+
+            - name: 'Install PHP'
+              uses: shivammathur/setup-php@v2
+              with:
+                  coverage: none
+                  php-version: '8.2'
+                  tools: composer:v2
+                  ini-values: date.timezone=UTC
+
+            - name: Install dependencies
+              run: composer install --no-progress
+
+            - name: Build the docs
+              run: |
+                  mkdir html
+                  vendor/bin/guides --theme rtd --output html
