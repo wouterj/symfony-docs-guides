@@ -4,6 +4,7 @@
     "require": {
         "symfony-tools/guides-extension": "*",
         "phpdocumentor/guides-cli": "*",
+        "phpdocumentor/guides-code": "*",
         "league/flysystem-memory": "1.*"
     },
     "require-dev": {
@@ -13,6 +14,7 @@
     "repositories": [
         { "type": "path", "url": "lib/guides/packages/guides" },
         { "type": "path", "url": "lib/guides/packages/guides-cli" },
+        { "type": "path", "url": "lib/guides/packages/guides-code" },
         { "type": "path", "url": "lib/guides/packages/guides-restructured-text" },
         { "type": "path", "url": "lib/symfony-extension" }
     ],

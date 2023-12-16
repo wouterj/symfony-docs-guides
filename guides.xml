@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<guides>
-    <extension class="phpDocumentor\Guides\RestructuredText"
-        default-code-language="php"
-    />
+<guides default-code-language="php">
+    <extension class="phpDocumentor\Guides\Code">
+        <alias name="env">bash</alias>
+        <alias name="html+jinja">twig</alias>
+        <alias name="html+twig">twig</alias>
+        <alias name="jinja">twig</alias>
+        <alias name="html+php">html</alias>
+        <alias name="xml+php">xml</alias>
+        <alias name="php-annotations">php</alias>
+        <alias name="php-attributes">php</alias>
+        <alias name="terminal">bash</alias>
+        <alias name="rst">markdown</alias>
+        <alias name="php-standalone">php</alias>
+        <alias name="php-symfony">php</alias>
+        <alias name="varnish4">c</alias>
+        <alias name="varnish3">c</alias>
+        <alias name="vcl">c</alias>
+    </extension>
 
     <extension class="SymfonyTools\GuidesExtension\DependencyInjection\SymfonyExtension"/>
 </guides>
