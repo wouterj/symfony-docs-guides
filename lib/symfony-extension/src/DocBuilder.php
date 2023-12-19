@@ -1,19 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Guides SymfonyExtension package.
+ *
+ * (c) Wouter de Jong
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace SymfonyTools\GuidesExtension;
 
 use League\Tactician\CommandBus;
-use SymfonyTools\GuidesExtension\Build\BuildConfig;
-use SymfonyTools\GuidesExtension\Build\BuildEnvironment;
-use SymfonyTools\GuidesExtension\Build\MemoryBuildEnvironment;
 use phpDocumentor\Guides\Compiler\CompilerContext;
 use phpDocumentor\Guides\Handlers\CompileDocumentsCommand;
 use phpDocumentor\Guides\Handlers\ParseDirectoryCommand;
 use phpDocumentor\Guides\Handlers\RenderDocumentCommand;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\RenderContext;
-use phpDocumentor\Guides\Renderer\UrlGenerator\UrlGeneratorInterface;
 use phpDocumentor\Guides\Twig\Theme\ThemeManager;
+use SymfonyTools\GuidesExtension\Build\BuildConfig;
+use SymfonyTools\GuidesExtension\Build\BuildEnvironment;
+use SymfonyTools\GuidesExtension\Build\MemoryBuildEnvironment;
 
 final class DocBuilder
 {
@@ -21,7 +29,6 @@ final class DocBuilder
         private CommandBus $commandBus,
         private ThemeManager $themeManager,
         private BuildConfig $buildConfig,
-        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -45,7 +52,6 @@ final class DocBuilder
                     $buildEnvironment->getSourceFilesystem(),
                     $buildEnvironment->getOutputFilesystem(),
                     '/',
-                    $this->urlGenerator,
                     'html',
                     $projectNode
                 )
@@ -60,6 +66,11 @@ final class DocBuilder
 
         $this->build($buildEnvironment);
 
-        return $buildEnvironment->getOutputFilesystem()->read('/index.html');
+        $output = $buildEnvironment->getOutputFilesystem()->read('/index.html');
+        if (false === $output) {
+            throw new \LogicException('Cannot build HTML from the provided reStructuredText: no HTML output found.');
+        }
+
+        return $output;
     }
 }

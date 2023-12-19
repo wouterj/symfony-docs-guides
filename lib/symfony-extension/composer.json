@@ -14,11 +14,12 @@
         }
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.2",
         "ext-json": "*",
         "ext-curl": "*",
         "phpdocumentor/guides": "*@dev",
         "phpdocumentor/guides-cli": "*@dev",
+        "phpdocumentor/guides-code": "*@dev",
         "phpdocumentor/guides-restructured-text": "*@dev",
         "scrivo/highlight.php": "^9.12.0",
         "symfony/config": "^5.2 || ^6.0",
@@ -38,7 +39,9 @@
         "league/flysystem-memory": "1.*",
         "symfony/phpunit-bridge": "^5.2 || ^6.0",
         "symfony/process": "^5.2 || ^6.0",
-        "vimeo/psalm": "^5.9",
         "symfony/var-dumper": "^6.2"
-    }
+    },
+    "repositories": [
+        { "type": "path", "url": "../guides/packages/guides-code" }
+    ]
 }
