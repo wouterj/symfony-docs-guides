@@ -6,7 +6,7 @@ on:
     pull_request: ~
 
 jobs:
-    tests:
+    symfony-extension:
         name: SymfonyExtension
         runs-on: ubuntu-latest
         defaults:
@@ -29,9 +29,13 @@ jobs:
               run: |
                   composer install --no-progress
                   ./vendor/bin/simple-phpunit install
+                  composer install --no-scripts --working-dir=tools/psalm
 
             - name: PHPUnit
               run: vendor/bin/simple-phpunit --testdox
+
+            - name: Psalm
+              run: tools/psalm/vendor/bin/psalm
 
     docs-build:
         name: Build docs
