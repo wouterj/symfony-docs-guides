@@ -29,6 +29,7 @@ jobs:
               run: |
                   composer install --no-progress
                   ./vendor/bin/simple-phpunit install
+                  composer install --no-scripts --working-dir=tools/php-cs-fixer
                   composer install --no-scripts --working-dir=tools/psalm
 
             - name: PHPUnit
@@ -36,6 +37,9 @@ jobs:
 
             - name: Psalm
               run: tools/psalm/vendor/bin/psalm
+
+            - name: PHP CS Fixer
+              run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff
 
     docs-build:
         name: Build docs
