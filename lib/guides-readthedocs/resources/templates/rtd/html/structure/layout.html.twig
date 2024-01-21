@@ -64,7 +64,16 @@
 
     <script type="text/javascript">
     jQuery(function () {
-        SphinxRtdTheme.Navigation.enable(true)
+        SphinxRtdTheme.Navigation.enable(true);
+
+        jQuery('.configuration-tabs button').click(function () {
+            const $currTab = jQuery(this).parent().find('[aria-selected=true]');
+            $currTab.attr('aria-selected', 'false').removeClass('btn-info').addClass('btn-neutral');
+            jQuery('#' + $currTab.attr('aria-controls')).css('display', 'none');
+
+            $(this).attr('aria-selected', 'true').removeClass('btn-neutral').addClass('btn-info');
+            jQuery('#' + $(this).attr('aria-controls')).css('display', 'block');
+        });
     })
     </script>
 

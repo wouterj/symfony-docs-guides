@@ -18,5 +18,29 @@
         <alias name="vcl">c</alias>
     </extension>
 
+    <extension class="phpDocumentor\Guides\ReStructuredText">
+        <code-language-label language="caddy" label="Caddy"/>
+        <code-language-label language="env" label="Dotenv"/>
+        <code-language-label language="html+jinja" label="Twig"/>
+        <code-language-label language="html+php" label="PHP"/>
+        <code-language-label language="html+twig" label="Twig"/>
+        <code-language-label language="jinja" label="Twig"/>
+        <code-language-label language="php" label="PHP"/>
+        <code-language-label language="php-annotations" label="Annotations"/>
+        <code-language-label language="php-attributes" label="Attributes"/>
+        <code-language-label language="php-standalone" label="Standalone Use"/>
+        <code-language-label language="php-symfony" label="Framework Use"/>
+        <code-language-label language="rst" label="RST"/>
+        <code-language-label language="terminal" label="Bash"/>
+        <code-language-label language="varnish3" label="Varnish 3"/>
+        <code-language-label language="varnish4" label="Varnish 4"/>
+        <code-language-label language="vcl" label="VCL"/>
+        <code-language-label language="xml" label="XML"/>
+        <code-language-label language="xml+php" label="XML"/>
+        <code-language-label language="yaml" label="YAML"/>
+    </extension>
+
     <extension class="SymfonyTools\GuidesExtension\DependencyInjection\SymfonyExtension"/>
+
+    <extension class="WouterJ\ReadTheDocs"/>
 </guides>

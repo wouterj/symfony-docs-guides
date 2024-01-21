@@ -1,0 +1,8 @@
+<p><span class="versionmodified {{ node.type }}">{{ node.versionLabel }}: </span>
+    {%- for subnode in node.value %}
+        {% if loop.first -%}
+            {{ renderNode(subnode.value) }}</p>
+        {%- else -%}
+            {{ renderNode(subnode) }}
+        {%- endif %}
+    {% endfor -%}

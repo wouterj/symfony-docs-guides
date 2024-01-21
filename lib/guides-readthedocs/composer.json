@@ -1,0 +1,17 @@
+{
+    "name": "wouterj/guides-readthedocs",
+    "description": "ReadTheDocs theme integration for phpDocumentor Guides",
+    "type": "library",
+    "authors": [{ "name": "Wouter de Jong", "email": "wouter@wouterj.nl" }],
+    "license": "BSD-3 clause",
+
+    "require": {
+        "symfony/dependency-injection": ">=5.4,<8.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "WouterJ\\ReadTheDocs\\": "src/"
+        }
+    }
+}
