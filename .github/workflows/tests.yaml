@@ -64,5 +64,4 @@ jobs:
 
             - name: Build the docs
               run: |
-                  mkdir html
                   vendor/bin/guides --theme rtd --output html
