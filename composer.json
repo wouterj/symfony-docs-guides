@@ -3,13 +3,13 @@
     "prefer-stable": true,
     "require": {
         "symfony-tools/guides-extension": "*",
-        "phpdocumentor/guides-cli": "*",
-        "phpdocumentor/guides-code": "*",
+        "phpdocumentor/guides-cli": "^1.0",
+        "phpdocumentor/guides-code": "^1.0",
         "league/flysystem-memory": "1.*",
         "wouterj/guides-readthedocs": "*"
     },
     "require-dev": {
-        "symfony/var-dumper": "6.3.x-dev",
+        "symfony/var-dumper": "^7.0",
         "nunomaduro/collision": "^5.11"
     },
     "repositories": [
