@@ -9,8 +9,7 @@
         "wouterj/guides-readthedocs": "*"
     },
     "require-dev": {
-        "symfony/var-dumper": "^7.0",
-        "nunomaduro/collision": "^5.11"
+        "symfony/var-dumper": "^7.0"
     },
     "repositories": [
         { "type": "path", "url": "lib/guides/packages/guides" },
@@ -19,8 +18,5 @@
         { "type": "path", "url": "lib/guides/packages/guides-restructured-text" },
         { "type": "path", "url": "lib/symfony-extension" },
         { "type": "path", "url": "lib/guides-readthedocs" }
-    ],
-    "autoload-dev": {
-        "files": ["lib/bootstrap.php"]
-    }
+    ]
 }
