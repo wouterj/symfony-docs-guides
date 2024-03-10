@@ -39,9 +39,19 @@ final class BuildConfig
         return str_replace('{symfonyVersion}', $this->getSymfonyVersion(), self::SYMFONY_REPOSITORY_URL);
     }
 
-    public function getFormat(): string
+    public function setOutputFormat(string $format): void
+    {
+        $this->format = $format;
+    }
+
+    public function getOutputFormat(): string
     {
         return $this->format;
+    }
+
+    public function getFormat(): string
+    {
+        return 'fjson' === $this->format ? 'html' : $this->format;
     }
 
     public function createProjectNode(): ProjectNode

@@ -1,0 +1,26 @@
+{
+    "parents": [],
+    "prev": null,
+    "next": null,
+    "title": "Orphan",
+    "meta": {},
+    "body": "<section id=\"orphan\">\n<h1>Orphan<a class=\"headerlink\" href=\"#orphan\" title=\"Permalink to this heading\">\u00b6</a></h1>\n<p>I\u2019m a little lonely, because nobody has included me in their toctree!</p>\n</section>\n",
+    "metatags": "<meta name=\"generator\" content=\"Docutils 0.19: https://docutils.sourceforge.io/\" />\n",
+    "rellinks": [
+        ["genindex", "General Index", "I", "index"]
+    ],
+    "sourcename": "orphan.rst.txt",
+    "toc": "<ul>\n<li><a class=\"reference internal\" href=\"#\">Orphan</a></li>\n</ul>\n",
+    "display_toc": false,
+    "page_source_suffix": ".rst",
+    "current_page_name": "orphan",
+    "sidebars": [
+        "about.html",
+        "navigation.html",
+        "relations.html",
+        "searchbox.html",
+        "donate.html"
+    ],
+    "customsidebar": null,
+    "alabaster_version": "0.7.13"
+}
