@@ -23,7 +23,7 @@ return static function (ContainerConfigurator $container) {
 
         ->set(EventDispatcherInterface::class, EventDispatcher::class)
 
-        ->set(BuildConfig::class)
+        ->set(BuildConfig::class)->public()
 
         ->set(DocBuilder::class)->public()
     ;
