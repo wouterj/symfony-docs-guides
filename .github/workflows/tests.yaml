@@ -5,6 +5,9 @@ on:
         branches: [main]
     pull_request: ~
 
+env:
+    SYMFONY_PHPUNIT_VERSION: 12
+
 jobs:
     symfony-extension:
         name: SymfonyExtension
@@ -21,7 +24,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   coverage: none
-                  php-version: '8.2'
+                  php-version: '8.4'
                   tools: composer:v2
                   ini-values: date.timezone=UTC
 
@@ -33,13 +36,15 @@ jobs:
                   composer install --no-scripts --working-dir=tools/psalm
 
             - name: PHPUnit
-              run: vendor/bin/simple-phpunit --testdox
+              run: composer test --testdox
 
             - name: Psalm
               run: tools/psalm/vendor/bin/psalm
+              if: ${{ !cancelled() }}
 
             - name: PHP CS Fixer
               run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff
+              if: ${{ !cancelled() }}
 
     docs-build:
         name: Build docs
@@ -55,7 +60,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   coverage: none
-                  php-version: '8.2'
+                  php-version: '8.4'
                   tools: composer:v2
                   ini-values: date.timezone=UTC
 
